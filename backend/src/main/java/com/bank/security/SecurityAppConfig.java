@@ -1,23 +1,25 @@
-package com.sayed.security;
+package com.bank.security;
 
 
-import com.sayed.jwt.JwtAuthFilter;
+import com.bank.jwt.AuthEntryPoint;
+import com.bank.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityAppConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final AuthEntryPoint authEntryPoint;
 
 
     @Bean
@@ -25,20 +27,17 @@ public class SecurityAppConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/",
-                                "/api/v1/auth/**",
-                                "/index",
-                                "/css/*",
-                                "/js/*").permitAll()
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/index").permitAll()
+                        .requestMatchers("/css/*").permitAll()
+                        .requestMatchers("/js/*").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);;
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
-
-
-
 
 
 }

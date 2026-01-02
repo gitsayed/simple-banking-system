@@ -1,4 +1,4 @@
-package com.sayed.utils;
+package com.bank.utils;
 
 public enum AcStatus {
     ACTIVE,

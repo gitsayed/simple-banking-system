@@ -1,10 +1,10 @@
-package com.bank.cbs;
+package com.bank;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CbsApplicationTests {
+class CbsCbsApplicationTests {
 
 	@Test
 	void contextLoads() {

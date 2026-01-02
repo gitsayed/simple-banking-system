@@ -1,4 +1,4 @@
-package com.sayed.dto;
+package com.bank.dto;
 
 
 

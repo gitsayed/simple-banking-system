@@ -1,4 +1,4 @@
-package com.sayed.dto;
+package com.bank.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

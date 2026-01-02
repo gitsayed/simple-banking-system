@@ -1,16 +1,16 @@
-package com.sayed.security;
+package com.bank.security;
 
 
-import com.sayed.dto.LoginRequestDto;
-import com.sayed.dto.LoginResponseDto;
-import com.sayed.dto.RegisterRequestDto;
-import com.sayed.entity.AppUser;
-import com.sayed.entity.Role;
-import com.sayed.exception.OrgException;
-import com.sayed.jwt.JwtUtils;
-import com.sayed.repository.AppUserRepository;
-import com.sayed.repository.RoleRepository;
-import com.sayed.utils.AcStatus;
+import com.bank.dto.LoginRequestDto;
+import com.bank.dto.LoginResponseDto;
+import com.bank.dto.RegisterRequestDto;
+import com.bank.entity.AppUser;
+import com.bank.entity.Role;
+import com.bank.exception.BankException;
+import com.bank.jwt.JwtUtils;
+import com.bank.repository.AppUserRepository;
+import com.bank.repository.RoleRepository;
+import com.bank.utils.AcStatus;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
@@ -66,7 +66,7 @@ public class LoginService {
         try {
             Optional<AppUser> opUser = appUserRepository.findTop1ByUsernameOrEmailOrMobileNo(request.getUsername(), request.getEmail(), request.getMobileNo());
             if (opUser.isPresent()) {
-                throw new OrgException("User already exists!");
+                throw new BankException("User already exists!");
             }
             List<Role> rolesList = roleRepository.findByIdIn(request.getRoleIds());
             AppUser user = new AppUser();
@@ -83,7 +83,7 @@ public class LoginService {
             return user;
         } catch (Exception e) {
             log.error("User registration error: {}", e.getMessage());
-            throw new OrgException("User registration error: "+ e.getMessage());
+            throw new BankException("User registration error: "+ e.getMessage());
         }
     }
 

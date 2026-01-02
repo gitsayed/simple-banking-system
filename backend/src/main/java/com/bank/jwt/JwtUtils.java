@@ -1,7 +1,7 @@
-package com.sayed.jwt;
+package com.bank.jwt;
 
 
-import com.sayed.entity.AppUser;
+import com.bank.entity.AppUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;

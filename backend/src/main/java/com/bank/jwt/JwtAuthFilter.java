@@ -1,6 +1,6 @@
-package com.sayed.jwt;
+package com.bank.jwt;
 
-import com.sayed.security.LoginService;
+import com.bank.security.LoginService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,16 +25,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-           log.info("doFilterInternal --> jwt: {} ");
-            String jwt = parseJwt(request);
 
+        try {
+            String jwt = parseJwt(request);
+            log.info("doFilterInternal --> jwt: {} ", jwt);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUsernameFromJwtToken(jwt);
-                if(StringUtils.isEmpty(username)) throw new UsernameNotFoundException("Username not found");
+                if (username == null) throw new UsernameNotFoundException("Username not found");
                 loginService.doAuthenticated(username);
             }
+        } catch (Exception e) {
+            log.error("Cannot set user authentication: {}", e);
+        }
 
         filterChain.doFilter(request, response);
+
     }
 
     private String parseJwt(HttpServletRequest request) {

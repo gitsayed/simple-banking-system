@@ -1,8 +1,8 @@
-package com.sayed.exception;
+package com.bank.exception;
 
-public class OrgException extends RuntimeException {
+public class BankException extends RuntimeException {
 
-    public OrgException(String message) {
+    public BankException(String message) {
         super(message);
     }
 }

@@ -1,4 +1,4 @@
-package com.sayed.dto;
+package com.bank.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,6 +18,7 @@ public class RegisterRequestDto {
     private String mobileNo;
 
     private String password;
+    private String employeeId;
 
     private List<Long> roleIds;
 

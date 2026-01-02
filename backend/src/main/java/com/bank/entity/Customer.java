@@ -1,28 +1,23 @@
 package com.bank.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-
-@Table(name = "A_PERMISSIONS")
+@Table(name = "CUSTOMER")
 @Accessors(chain = true)
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Permission {
-
+public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "permission_seq")
-    @SequenceGenerator(name = "permission_seq", sequenceName = "A_PERMISSIONS_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
+    @SequenceGenerator(name = "customer_seq", sequenceName = "CUSTOMER_SEQ", allocationSize = 1)
     private Long id;
-    @Column(unique = true)
     private String name;
-
-
-    
+    private String address;
+    private String phone;
 }

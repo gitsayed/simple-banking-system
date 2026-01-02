@@ -1,4 +1,4 @@
-package com.sayed.jwt;
+package com.bank.jwt;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;

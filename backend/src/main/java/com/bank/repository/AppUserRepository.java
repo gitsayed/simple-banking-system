@@ -1,6 +1,6 @@
-package com.sayed.repository;
+package com.bank.repository;
 
-import com.sayed.entity.AppUser;
+import com.bank.entity.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

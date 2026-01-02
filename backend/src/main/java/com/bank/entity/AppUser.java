@@ -1,7 +1,7 @@
-package com.sayed.entity;
+package com.bank.entity;
 
 
-import com.sayed.utils.AcStatus;
+import com.bank.utils.AcStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +20,8 @@ import java.util.List;
 public class AppUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
+    @SequenceGenerator(name = "users_seq", sequenceName = "A_USERS_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -28,15 +29,13 @@ public class AppUser {
     private String password;
     @Column(unique = true, nullable = false)
     private String email;
-    private Integer age;
-    private Integer employeeId;
+    private String employeeId;
     @Column(unique = true)
     private String mobileNo;
 
     @Enumerated(EnumType.STRING)
     private AcStatus status;
     private String dept;
-    private String joiningDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

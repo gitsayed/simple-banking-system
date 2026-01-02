@@ -1,16 +1,15 @@
-package com.sayed.controller;
+package com.bank.controller;
 
 
-import com.sayed.dto.Employee;
-import com.sayed.dto.LoginRequestDto;
-import com.sayed.dto.LoginResponseDto;
-import com.sayed.dto.RegisterRequestDto;
-import com.sayed.jwt.JwtConfig;
-import com.sayed.security.LoginService;
+import com.bank.dto.LoginRequestDto;
+import com.bank.dto.LoginResponseDto;
+import com.bank.dto.RegisterRequestDto;
+import com.bank.security.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +31,7 @@ public class AuthController {
     }
 
     @PostMapping(value = {"/signup", "/register"})
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> doRegister(@RequestBody @Valid RegisterRequestDto request) {
         log.info("Creating new user: {}", request);
         loginService.registerUser(request);

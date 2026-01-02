@@ -1,4 +1,4 @@
-package com.sayed.entity;
+package com.bank.entity;
 
 
 import jakarta.persistence.*;
@@ -19,7 +19,8 @@ import java.util.List;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_seq")
+    @SequenceGenerator(name = "roles_seq", sequenceName = "A_ROLES_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(unique = true, nullable = false)
