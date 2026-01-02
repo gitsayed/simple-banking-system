@@ -3,6 +3,7 @@ package com.bank.security;
 
 import com.bank.dto.LoginRequestDto;
 import com.bank.dto.LoginResponseDto;
+import com.bank.dto.MetaAuthorities;
 import com.bank.dto.RegisterRequestDto;
 import com.bank.entity.AppUser;
 import com.bank.entity.Role;
@@ -11,6 +12,7 @@ import com.bank.jwt.JwtUtils;
 import com.bank.repository.AppUserRepository;
 import com.bank.repository.RoleRepository;
 import com.bank.utils.AcStatus;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
@@ -23,6 +25,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +42,7 @@ public class LoginService {
     private final JwtUtils jwtUtils;
     private final AppUserRepository appUserRepository;
     private final RoleRepository roleRepository;
+    private final HttpServletRequest request;
 
     public LoginResponseDto doLogin(LoginRequestDto request) {
         AppUser user = getUser(request.getUsername());
@@ -100,7 +104,8 @@ public class LoginService {
             authorities.addAll(permissions);
         });
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, authorities);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, authorities);
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         MetaAuthorities metaAuthorities = new MetaAuthorities();
@@ -114,12 +119,6 @@ public class LoginService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found by username: " + username));
     }
 
-    @Data
-    @Accessors(chain = true)
-    static class MetaAuthorities {
-        private List<String> roles;
-        private Set<GrantedAuthority> authorities;
 
-    }
 
 }
