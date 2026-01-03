@@ -2,6 +2,7 @@ package com.bank.service;
 
 import com.bank.dto.CustomerRequestDto;
 import com.bank.dto.CustomerResponseDto;
+import com.bank.dto.CustomerResponseWithAccountsDto;
 import com.bank.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,5 +15,7 @@ public interface CustomerService {
     Customer updateCustomerById(Long id, CustomerRequestDto requestDto);
     Page<CustomerResponseDto> getPagedCustomers(Long id, String name, String address, String mobileNo, String nid, Pageable pageable);
     List<CustomerResponseDto> getCustomerList(Long id, String name, String address, String mobileNo, String nid);
-    CustomerResponseDto findById(Long id);
+    CustomerResponseWithAccountsDto findById(Long id);
+
+
 }

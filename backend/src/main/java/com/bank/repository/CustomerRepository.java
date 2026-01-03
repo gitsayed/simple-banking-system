@@ -1,6 +1,7 @@
 package com.bank.repository;
 
 import com.bank.dto.CustomerResponseDto;
+import com.bank.dto.CustomerResponseWithAccountsDto;
 import com.bank.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,8 +51,15 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
                                               String mobileNo,
                                               String nid);
 
-    @Query(value = COMMON_SQL + " WHERE c.id = :id")
-    CustomerResponseDto getCustomerById(Long id);
+    String FIND_BY_ID_SQL = """
+            SELECT c
+            FROM Customer c
+            LEFT JOIN Account ac ON ac.customer.id = c.id 
+            WHERE c.id = :id
+            """;
+
+    @Query(value = FIND_BY_ID_SQL)
+    CustomerResponseWithAccountsDto getCustomerById(Long id);
 
 
 }

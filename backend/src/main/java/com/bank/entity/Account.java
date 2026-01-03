@@ -18,10 +18,15 @@ public class Account {
     @SequenceGenerator(name = "account_seq", sequenceName = "ACCOUNT_SEQ", allocationSize = 1)
     private Long id;
 
-    @ManyToOne
-    private Customer customer;
+    @Column(unique = true, nullable = false)
     private String accountNumber;
     private String accountType;
-    private double balance;
+    private Double balance;
+    private Double dailyTransactionLimit;
     private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Customer customer;
+
+
 }

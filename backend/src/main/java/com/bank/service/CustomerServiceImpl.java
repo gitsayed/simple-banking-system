@@ -2,6 +2,7 @@ package com.bank.service;
 
 import com.bank.dto.CustomerRequestDto;
 import com.bank.dto.CustomerResponseDto;
+import com.bank.dto.CustomerResponseWithAccountsDto;
 import com.bank.entity.Customer;
 import com.bank.exception.BankException;
 import com.bank.repository.CustomerRepository;
@@ -81,7 +82,7 @@ public class CustomerServiceImpl implements  CustomerService{
     }
 
     @Override
-    public CustomerResponseDto findById(Long id) {
+    public CustomerResponseWithAccountsDto findById(Long id) {
         return customerRepository.getCustomerById(id);
     }
 

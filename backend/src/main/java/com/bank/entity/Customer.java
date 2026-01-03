@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Table(name = "CUSTOMER")
 @Accessors(chain = true)
@@ -23,4 +24,7 @@ public class Customer {
     private String address;
     private String mobileNo;
     private String nid;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    private List<Account> accounts;
 }

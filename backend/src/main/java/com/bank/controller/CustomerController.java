@@ -3,6 +3,7 @@ package com.bank.controller;
 
 import com.bank.dto.CustomerRequestDto;
 import com.bank.dto.CustomerResponseDto;
+import com.bank.dto.CustomerResponseWithAccountsDto;
 import com.bank.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +40,9 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponseDto> getCustomerById( @PathVariable Long id) {
+    public ResponseEntity<CustomerResponseWithAccountsDto> getCustomerById( @PathVariable Long id) {
         log.info("Finding customer by id : {}", id);
-        CustomerResponseDto customerResponseDto = customerService.findById(id);
+        CustomerResponseWithAccountsDto customerResponseDto = customerService.findById(id);
         return ResponseEntity.ok(customerResponseDto);
     }
 

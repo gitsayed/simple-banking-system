@@ -9,9 +9,4 @@ public interface CustomerResponseDto {
      String getNid();
 
 
-     interface CustomerAc{
-         String getAccountNo();
-         Double getBalance();
-     }
-
 }
