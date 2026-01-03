@@ -1,6 +1,9 @@
 package com.bank.exception;
 
 
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,12 @@ public class GlobalExceptionHandler {
         return getObjectResponseEntity(exception, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ResponseEntity<Object> handleInsufficientBalanceException(
+            InsufficientBalanceException exception) {
+        return getObjectResponseEntity(exception, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationException(
             MethodArgumentNotValidException exception) {
@@ -51,34 +60,49 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Object> handleIllegalState(
-            Exception exception) {
+            IllegalStateException exception) {
         return getObjectResponseEntity(exception, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> handleNoSuchElementException(
-            Exception exception) {
+            NoSuchElementException exception) {
         return getObjectResponseEntity(exception, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Object> handleUsernameNotFoundException(
-            Exception exception) {
+            UsernameNotFoundException exception) {
         return getObjectResponseEntity(exception, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleBadCredentialsException(
-            Exception exception) {
+            BadCredentialsException exception) {
         return getObjectResponseEntity(exception, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(
-            Exception exception) {
+            AccessDeniedException exception) {
         return getObjectResponseEntity(exception, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Object> handleSignatureException(
+            SignatureException exception) {
+        return getObjectResponseEntity(exception, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<Object> handleMalformedJwtException(
+            MalformedJwtException exception) {
+        return getObjectResponseEntity(exception, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UnsupportedJwtException.class)
+    public ResponseEntity<Object> handleUnsupportedJwtException(
+            UnsupportedJwtException exception) {
+        return getObjectResponseEntity(exception, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalException(

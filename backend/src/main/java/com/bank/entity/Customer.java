@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDate;
+
 @Table(name = "CUSTOMER")
 @Accessors(chain = true)
 @Data
@@ -19,5 +21,6 @@ public class Customer {
     private Long id;
     private String name;
     private String address;
-    private String phone;
+    private String mobileNo;
+    private String nid;
 }

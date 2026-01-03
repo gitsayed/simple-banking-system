@@ -1,24 +1,18 @@
 package com.bank.service;
 
+import com.bank.dto.CustomerRequestDto;
+import com.bank.dto.CustomerResponseDto;
 import com.bank.entity.Customer;
-import com.bank.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-@Service
-public class CustomerService {
-    @Autowired
-    private CustomerRepository customerRepository;
+public interface CustomerService {
 
-    public Customer createCustomer(Customer customer) {
-        return customerRepository.save(customer);
-    }
-
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
-    }
-
-    // Add edit, view methods similarly
+    Customer createCustomer(CustomerRequestDto requestDto);
+    Customer updateCustomerById(Long id, CustomerRequestDto requestDto);
+    Page<CustomerResponseDto> getPagedCustomers(Long id, String name, String address, String mobileNo, String nid, Pageable pageable);
+    List<CustomerResponseDto> getCustomerList(Long id, String name, String address, String mobileNo, String nid);
+    CustomerResponseDto findById(Long id);
 }

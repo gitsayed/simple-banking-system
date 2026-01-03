@@ -11,7 +11,8 @@ CREATE TABLE CUSTOMER (
                           ID NUMBER PRIMARY KEY,
                           NAME VARCHAR2(100) NOT NULL,
                           ADDRESS VARCHAR2(200),
-                          PHONE VARCHAR2(20)
+                          MOBILE_NO VARCHAR2(20)
+                          NID VARCHAR2(20)
 );
 
 CREATE TABLE ACCOUNT (

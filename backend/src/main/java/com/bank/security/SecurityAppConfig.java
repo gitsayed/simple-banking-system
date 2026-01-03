@@ -1,6 +1,7 @@
 package com.bank.security;
 
 
+import com.bank.jwt.AuthEntryPoint;
 import com.bank.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityAppConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final AuthEntryPoint authEntryPoint;
 
 
     @Bean
@@ -33,6 +35,8 @@ public class SecurityAppConfig {
                         .requestMatchers("/css/*").permitAll()
                         .requestMatchers("/js/*").permitAll()
                         .anyRequest().authenticated())
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authEntryPoint))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
