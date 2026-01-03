@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,7 +28,9 @@ public class AccountServiceImpl implements AccountService {
     private final CustomerRepository customerRepository;
 
 
+
     @Override
+    @Transactional
     public Account createAccount(AccountRequestDto request) {
         try {
             String newAcNo = accountRepository.getNewAccountNumber();
@@ -50,6 +53,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public Account updateAccountById(Long id, AccountUpdateRequestDto request) {
         try {
             Account account = accountRepository.findById(id).orElseThrow(() -> new BankException("Account not found by id: " + id));

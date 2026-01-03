@@ -6,6 +6,8 @@ import com.bank.dto.AccountResponseDto;
 import com.bank.dto.AccountResponseWithCustomerDto;
 import com.bank.dto.AccountUpdateRequestDto;
 import com.bank.service.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,11 +22,13 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@Tag(name = "Accounts", description = "Operations about bank accounts")
 public class AccountController {
 
     private final AccountService accountService;
 
     @PostMapping
+    @Operation(summary = "Create Account.")
     public ResponseEntity<String> createAccount(@RequestBody AccountRequestDto request) {
         log.info("Creating account : {}", request);
         accountService.createAccount(request);
@@ -33,6 +37,7 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update Account By ID.")
     public ResponseEntity<Void> updateAccountById(@PathVariable Long id,
                                                   @RequestBody AccountUpdateRequestDto request) {
         log.info("Updating account {}: {}", id, request);
@@ -42,6 +47,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Fetch Account By ID.")
     public ResponseEntity<AccountResponseWithCustomerDto> fetchAccountById(@PathVariable Long id) {
         log.info("Fetching account by id: {}", id);
         AccountResponseWithCustomerDto accountDetail = accountService.findAccountById(id);
@@ -49,6 +55,7 @@ public class AccountController {
     }
 
     @GetMapping("/page")
+    @Operation(summary = "Fetch Account pagination with search.")
     public ResponseEntity<Page<AccountResponseDto>>
     fetchPagedAccounts(@RequestParam(required = false) Long id,
                        @RequestParam(required = false) String accountType,
@@ -62,6 +69,7 @@ public class AccountController {
     }
 
     @GetMapping("/list")
+    @Operation(summary = "Fetch Account list with search.")
     public ResponseEntity<List<AccountResponseDto>>
     fetchAccountList(@RequestParam(required = false) Long id,
                      @RequestParam(required = false) String accountType,

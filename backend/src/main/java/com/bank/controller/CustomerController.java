@@ -5,6 +5,7 @@ import com.bank.dto.CustomerRequestDto;
 import com.bank.dto.CustomerResponseDto;
 import com.bank.dto.CustomerResponseWithAccountsDto;
 import com.bank.service.CustomerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@Tag(name = "Customers", description = "Operations about customer info")
 public class CustomerController {
 
     private final CustomerService customerService;

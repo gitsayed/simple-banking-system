@@ -29,11 +29,22 @@ public class SecurityAppConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/api/v1/auth/login").permitAll()
-                        .requestMatchers("/index").permitAll()
-                        .requestMatchers("/css/*").permitAll()
-                        .requestMatchers("/js/*").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/index",
+                                "/api/v1/auth/login",
+                                "/.well-known/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/cbs/v3/**",
+                                "/v3/**",
+                                "/swagger-ui/**",
+                                "/**/v3/api-docs.yaml",
+                                "/webjars/**",
+                                "/swagger-resources/**",
+                                "/css/**",
+                                "/js/**"
+                        ).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(authEntryPoint))

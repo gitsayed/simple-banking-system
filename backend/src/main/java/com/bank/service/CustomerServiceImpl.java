@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class CustomerServiceImpl implements  CustomerService{
 
     private final CustomerRepository customerRepository;
 
+    @Override
+    @Transactional
     public Customer createCustomer(CustomerRequestDto request) {
         try {
             Customer oldCustomer = customerRepository.findTop1ByMobileNo(request.getMobileNo());
@@ -41,6 +44,7 @@ public class CustomerServiceImpl implements  CustomerService{
     }
 
     @Override
+    @Transactional
     public Customer updateCustomerById(Long id, CustomerRequestDto request) {
         try {
             Customer customer = customerRepository.findById(id).orElseThrow(()-> new BankException("Customer not found by id: "+ id));
