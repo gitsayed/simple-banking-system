@@ -62,7 +62,7 @@ public class TransactionServiceImpl implements TransactionService {
         Account toAccount = accountRepository.findById(request.getToAccountId()).orElseThrow(() -> new BankException("Account not found by id: " + request.getToAccountId()));
 
         if (toAccount.getStatus().equalsIgnoreCase("inactive")) {
-            throw new BankException("Account Inactive");
+            throw new BankException("Account is Inactive");
         }
 
         if (request.getTransactionAmount() > toAccount.getDailyTransactionLimit()) {
@@ -95,7 +95,7 @@ public class TransactionServiceImpl implements TransactionService {
         Account fromAccount = accountRepository.findById(request.getFromAccountId()).orElseThrow(() -> new BankException("Account not found by id: " + request.getFromAccountId()));
 
         if (fromAccount.getStatus().equalsIgnoreCase("inactive")) {
-            throw new BankException("Account Inactive");
+            throw new BankException("Account is Inactive");
         }
 
         if (request.getTransactionAmount() > fromAccount.getBalance()) {
@@ -133,7 +133,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Account fromAccount = accountRepository.findById(request.getFromAccountId()).orElseThrow(() -> new BankException("fromAccount not found by id: " + request.getFromAccountId()));
         if (fromAccount.getStatus().equalsIgnoreCase("inactive")) {
-            throw new BankException("fromAccount Inactive");
+            throw new BankException("fromAccount is Inactive");
         }
 
         if (request.getTransactionAmount() > fromAccount.getBalance()) {
@@ -156,7 +156,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Account toAccount = accountRepository.findById(request.getToAccountId()).orElseThrow(() -> new BankException("toAccount not found by id: " + request.getToAccountId()));
         if (toAccount.getStatus().equalsIgnoreCase("inactive")) {
-            throw new BankException("toAccount Inactive");
+            throw new BankException("toAccount is Inactive");
         }
 
         if (request.getTransactionAmount() > toAccount.getDailyTransactionLimit()) {
