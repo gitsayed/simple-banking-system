@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping(value = {"/signup", "/register"})
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> doRegister(@RequestBody @Valid RegisterRequestDto request) {
         log.info("Creating new user: {}", request);
         loginService.registerUser(request);
