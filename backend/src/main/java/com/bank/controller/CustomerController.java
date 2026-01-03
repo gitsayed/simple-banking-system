@@ -34,7 +34,8 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCustomerById( @PathVariable Long id, @RequestBody CustomerRequestDto request) {
+    public ResponseEntity<Void> updateCustomerById( @PathVariable Long id,
+                                                    @RequestBody @Valid CustomerRequestDto request) {
         log.info("Updating customer by id : {}", id);
         customerService.updateCustomerById(id, request);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);

@@ -8,6 +8,7 @@ import com.bank.dto.AccountUpdateRequestDto;
 import com.bank.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,7 @@ public class AccountController {
 
     @PostMapping
     @Operation(summary = "Create Account.")
-    public ResponseEntity<String> createAccount(@RequestBody AccountRequestDto request) {
+    public ResponseEntity<String> createAccount(@RequestBody @Valid AccountRequestDto request) {
         log.info("Creating account : {}", request);
         accountService.createAccount(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -39,7 +40,7 @@ public class AccountController {
     @PutMapping("/{id}")
     @Operation(summary = "Update Account By ID.")
     public ResponseEntity<Void> updateAccountById(@PathVariable Long id,
-                                                  @RequestBody AccountUpdateRequestDto request) {
+                                                  @RequestBody @Valid AccountUpdateRequestDto request) {
         log.info("Updating account {}: {}", id, request);
         accountService.updateAccountById(id, request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
