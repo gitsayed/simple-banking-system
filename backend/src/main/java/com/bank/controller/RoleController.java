@@ -40,10 +40,10 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Void> getRoleById(@PathVariable Long id) {
+    public ResponseEntity<Role> getRoleById(@PathVariable Long id) {
         log.info("Getting role ... {}", id);
-        roleService.getRoleById(id);
-        return ResponseEntity.ok().build();
+        Role role= roleService.getRoleById(id);
+        return ResponseEntity.ok(role);
     }
 
     @GetMapping("/page")
