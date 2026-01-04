@@ -1,13 +1,9 @@
 package com.bank.security;
 
 
-import com.bank.dto.LoginRequestDto;
-import com.bank.dto.LoginResponseDto;
-import com.bank.dto.MetaAuthorities;
-import com.bank.dto.RegisterRequestDto;
+import com.bank.dto.*;
 import com.bank.entity.AppUser;
 import com.bank.entity.Role;
-import com.bank.exception.AuthException;
 import com.bank.exception.BankException;
 import com.bank.jwt.JwtUtils;
 import com.bank.repository.AppUserRepository;
@@ -85,7 +81,7 @@ public class LoginService {
             return user;
         } catch (Exception e) {
             log.error("User registration error: {}", e.getMessage());
-            throw new BankException("User registration error: "+ e.getMessage());
+            throw new BankException("User registration error: " + e.getMessage());
         }
     }
 
@@ -105,7 +101,6 @@ public class LoginService {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, authorities);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         MetaAuthorities metaAuthorities = new MetaAuthorities();
         metaAuthorities.setRoles(roles)
                 .setAuthorities(authorities);
@@ -117,6 +112,14 @@ public class LoginService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found by username: " + username));
     }
 
+    public UserInfoDto getUserInfo() {
+        String username = Objects.requireNonNull(SecurityContextHolder.getContext()
+                        .getAuthentication())
+                .getName();
+        if(username==null) throw new BankException("Invalid Token");
+        return appUserRepository.getUserInfoByUsername(username);
+
+    }
 
 
 }
