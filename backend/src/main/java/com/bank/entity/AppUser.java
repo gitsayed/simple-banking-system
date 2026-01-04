@@ -2,6 +2,7 @@ package com.bank.entity;
 
 
 import com.bank.utils.AcStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class AppUser {
     private AcStatus status;
     private String dept;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "A_USER_ROLES",

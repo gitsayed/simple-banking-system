@@ -26,13 +26,14 @@ public class SecurityAppConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.cors(cors -> {})
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers(
                                 "/",
                                 "/index",
-                                "/api/v1/auth/login",
                                 "/.well-known/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
