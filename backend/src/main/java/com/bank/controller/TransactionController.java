@@ -1,6 +1,8 @@
 package com.bank.controller;
 
 import com.bank.dto.TransactionRequestDto;
+import com.bank.dto.TransactionResponseDto;
+import com.bank.dto.TransactionType;
 import com.bank.entity.Transaction;
 import com.bank.service.TransactionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @RequestMapping("/api/v1/transactions")
@@ -33,17 +36,25 @@ public class TransactionController {
     }
 
 
+    @GetMapping("/statement/page")
+    public ResponseEntity<Page<TransactionResponseDto>> getPagedStatement(@RequestParam String accountNumber,
+                                                                          @RequestParam LocalDate startDate,
+                                                                          @RequestParam LocalDate endDate,
+                                                                          @RequestParam(required = false) TransactionType transactionType,
+                                                                          Pageable pageable) {
+        log.info("Fetching account statement: {}", accountNumber);
+        Page<TransactionResponseDto> pagedStatement = transactionService.getPagedAccountStatement(accountNumber, startDate, endDate, transactionType, pageable);
+        return ResponseEntity.ok(pagedStatement);
+    }
 
-
-
-    @GetMapping("/statement/{accountId}")
-    public Page<Transaction> getStatement(@PathVariable Long accountId,
-                                          @RequestParam LocalDate startDate,
-                                          @RequestParam LocalDate endDate,
-                                          Pageable pageable) {
-
-//        return transactionService.getAccountStatement();
-        return null;
+    @GetMapping("/statement/list")
+    public ResponseEntity<List<TransactionResponseDto>> getPagedStatement(@RequestParam String accountNumber,
+                                                                          @RequestParam LocalDate startDate,
+                                                                          @RequestParam LocalDate endDate,
+                                                                          @RequestParam(required = false) TransactionType transactionType) {
+        log.info("Fetching account statement: {}", accountNumber);
+        List<TransactionResponseDto> statementList = transactionService.getAccountStatementList(accountNumber, startDate, endDate, transactionType);
+        return ResponseEntity.ok(statementList);
     }
 
 

@@ -6,7 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-@Table(name = "ACCOUNT")
+@Table(name = "ACCOUNT",
+        indexes = {
+                @Index(
+                        name = "IDX_ACCOUNT_AC_NO",
+                        columnList = "ACCOUNT_NUMBER"
+                )
+        })
 @Accessors(chain = true)
 @Data
 @Entity

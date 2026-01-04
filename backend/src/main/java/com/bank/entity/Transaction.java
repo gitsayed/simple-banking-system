@@ -7,10 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Table(name = "TRANSACTION")
+@Table(name = "TRANSACTION",
+        indexes = {
+                @Index(
+                        name = "IDX_TRANSACTION_TRX_DATE_",
+                        columnList = "transactionDate"
+                )
+        })
 @Accessors(chain = true)
 @Data
 @Entity
@@ -23,11 +28,12 @@ public class Transaction {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private TransactionType type;
+    private TransactionType transactionType;
     private Double amount;
     private Double fromAcRunningBalance;
     private Double toAcRunningBalance;
-    private LocalDateTime transactionDate =  LocalDateTime.now();
+
+    private LocalDateTime transactionDate = LocalDateTime.now();
 
     @Column(unique = true, nullable = false)
     private String reference;

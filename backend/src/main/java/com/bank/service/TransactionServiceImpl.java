@@ -1,6 +1,8 @@
 package com.bank.service;
 
 import com.bank.dto.TransactionRequestDto;
+import com.bank.dto.TransactionResponseDto;
+import com.bank.dto.TransactionType;
 import com.bank.entity.Account;
 import com.bank.entity.Transaction;
 import com.bank.exception.BankException;
@@ -17,11 +19,14 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
+
+    private static final String INACTIVE = "inactive";
 
     private final TransactionRepository transactionRepository;
 
@@ -55,13 +60,23 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
 
+    @Override
+    public Page<TransactionResponseDto> getPagedAccountStatement(String accountNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType, Pageable pageable) {
+        return transactionRepository.getPagedAccountStatement( accountNumber,  startDate,  endDate, transactionType!=null? transactionType.toString(): null,   pageable);
+    }
+
+    @Override
+    public List<TransactionResponseDto> getAccountStatementList(String accountNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType) {
+        return transactionRepository.getAccountStatementList( accountNumber,  startDate,  endDate, transactionType!=null? transactionType.toString(): null);
+    }
+
     private Transaction doDeposit(TransactionRequestDto request) {
         if (request.getToAccountId() == null) {
             throw new BankException(" toAccountId is required");
         }
         Account toAccount = accountRepository.findById(request.getToAccountId()).orElseThrow(() -> new BankException("Account not found by id: " + request.getToAccountId()));
 
-        if (toAccount.getStatus().equalsIgnoreCase("inactive")) {
+        if (toAccount.getStatus().equalsIgnoreCase(INACTIVE)) {
             throw new BankException("Account is Inactive");
         }
 
@@ -81,7 +96,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = new Transaction();
         transaction.setToAccount(toAccount)
                 .setToAcRunningBalance(toAccount.getBalance())
-                .setType(request.getTransactionType())
+                .setTransactionType(request.getTransactionType())
                 .setAmount(request.getTransactionAmount())
                 .setRemarks(request.getRemarks());
         return transaction;
@@ -94,7 +109,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
         Account fromAccount = accountRepository.findById(request.getFromAccountId()).orElseThrow(() -> new BankException("Account not found by id: " + request.getFromAccountId()));
 
-        if (fromAccount.getStatus().equalsIgnoreCase("inactive")) {
+        if (fromAccount.getStatus().equalsIgnoreCase(INACTIVE)) {
             throw new BankException("Account is Inactive");
         }
 
@@ -118,7 +133,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = new Transaction();
         transaction.setFromAccount(fromAccount)
                 .setFromAcRunningBalance(fromAccount.getBalance())
-                .setType(request.getTransactionType())
+                .setTransactionType(request.getTransactionType())
                 .setAmount(request.getTransactionAmount())
                 .setRemarks(request.getRemarks());
         return transaction;
@@ -132,7 +147,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         Account fromAccount = accountRepository.findById(request.getFromAccountId()).orElseThrow(() -> new BankException("fromAccount not found by id: " + request.getFromAccountId()));
-        if (fromAccount.getStatus().equalsIgnoreCase("inactive")) {
+        if (fromAccount.getStatus().equalsIgnoreCase(INACTIVE)) {
             throw new BankException("fromAccount is Inactive");
         }
 
@@ -155,7 +170,7 @@ public class TransactionServiceImpl implements TransactionService {
         accountRepository.save(fromAccount);
 
         Account toAccount = accountRepository.findById(request.getToAccountId()).orElseThrow(() -> new BankException("toAccount not found by id: " + request.getToAccountId()));
-        if (toAccount.getStatus().equalsIgnoreCase("inactive")) {
+        if (toAccount.getStatus().equalsIgnoreCase(INACTIVE)) {
             throw new BankException("toAccount is Inactive");
         }
 
@@ -179,7 +194,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .setFromAcRunningBalance(fromAccount.getBalance())
                 .setToAccount(toAccount)
                 .setToAcRunningBalance(toAccount.getBalance())
-                .setType(request.getTransactionType())
+                .setTransactionType(request.getTransactionType())
                 .setAmount(request.getTransactionAmount())
                 .setRemarks(request.getRemarks());
         return transaction;
