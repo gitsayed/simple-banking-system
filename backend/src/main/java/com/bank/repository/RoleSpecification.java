@@ -10,6 +10,9 @@ import java.util.List;
 
 public class RoleSpecification {
 
+    private RoleSpecification(){
+
+    }
     public static Specification<Role> withFilters(Long id, String name) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();

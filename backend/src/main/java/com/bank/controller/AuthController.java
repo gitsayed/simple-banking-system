@@ -36,12 +36,7 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/user-info")
-    public ResponseEntity<UserInfoDto> getUserInfo(){
-        log.info("Fetching user info...");
-        UserInfoDto userInfoDto = loginService.getUserInfo();
-        return ResponseEntity.ok(userInfoDto);
-    }
+
 
 
 }

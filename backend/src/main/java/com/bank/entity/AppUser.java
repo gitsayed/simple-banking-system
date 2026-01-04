@@ -27,6 +27,7 @@ public class AppUser {
 
     @Column(unique = true, nullable = false)
     private String username;
+    @JsonIgnore
     private String password;
     @Column(unique = true, nullable = false)
     private String email;
