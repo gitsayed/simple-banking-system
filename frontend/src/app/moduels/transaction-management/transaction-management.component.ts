@@ -18,7 +18,7 @@ import { TransactionService } from '../../_services/transaction.service';
 })
 export class TransactionManagementComponent implements OnInit {
 
-  displayedColumns = ["id", "accountNumber", "accountType", "status", "balance", "action"];
+  displayedColumns = [ "transactionId", "transactionDate", "referenceNumber", "transactionType", "creditAmount", "debitAmount", "runningBalance", "remarks", "action"];
   dataSource = new MatTableDataSource<any>([]);
   totalElements = 0;
   totalPages = 0;

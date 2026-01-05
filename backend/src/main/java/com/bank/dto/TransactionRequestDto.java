@@ -11,8 +11,8 @@ public class TransactionRequestDto {
 
     @NotNull(message = "transactionType is required.")
     private TransactionType transactionType;
-    private Long fromAccountId;
-    private Long toAccountId;
+    private String fromAccountNumber;
+    private String toAccountNumber;
     @NotNull(message = "transactionAmount is required.")
     private Double transactionAmount;
     private String remarks;

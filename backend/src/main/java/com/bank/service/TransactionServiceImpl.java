@@ -46,7 +46,7 @@ public class TransactionServiceImpl implements TransactionService {
 
             transaction.setTransactionDate(LocalDateTime.now());
             transactionRepository.save(transaction);
-            String newReference = "TXN-" + getNewTransactionReference() +  ( transaction.getId() !=null? ("-" +transaction.getId()) : "");
+            String newReference = "TRX-" + getNewTransactionReference() +  ( transaction.getId() !=null? ("-" +transaction.getId()) : "");
             transaction.setReference(newReference);
             log.info("Transaction successful: {}", transaction.getId());
             return transaction;
@@ -71,10 +71,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private Transaction doDeposit(TransactionRequestDto request) {
-        if (request.getToAccountId() == null) {
-            throw new BankException(" toAccountId is required");
+        if (request.getToAccountNumber() == null) {
+            throw new BankException(" toAccountNumber is required");
         }
-        Account toAccount = accountRepository.findById(request.getToAccountId()).orElseThrow(() -> new BankException("Account not found by id: " + request.getToAccountId()));
+
+        Account toAccount = accountRepository.findByAccountNumber(request.getToAccountNumber()).orElseThrow(() -> new BankException("Account not found by accountNumber: " + request.getToAccountNumber()));
 
         if (toAccount.getStatus().equalsIgnoreCase(INACTIVE)) {
             throw new BankException("Account is Inactive");
@@ -84,7 +85,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new BankException("Transaction amount exists daily transaction limit!");
         }
 
-        Double totalTrx = getTodayTotalTrx(request.getToAccountId()) + request.getTransactionAmount();
+        Double totalTrx = getTodayTotalTrx(toAccount.getId()) + request.getTransactionAmount();
 
         if (totalTrx > toAccount.getDailyTransactionLimit()) {
             throw new BankException("Transaction amount exists daily transaction limit!");
@@ -104,10 +105,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private Transaction doWithdrawal(TransactionRequestDto request) {
-        if (request.getFromAccountId() == null) {
-            throw new BankException(" fromAccountId is required");
+        if (request.getFromAccountNumber() == null) {
+            throw new BankException("fromAccountNumber is required");
         }
-        Account fromAccount = accountRepository.findById(request.getFromAccountId()).orElseThrow(() -> new BankException("Account not found by id: " + request.getFromAccountId()));
+        Account fromAccount = accountRepository.findByAccountNumber(request.getFromAccountNumber()).orElseThrow(() -> new BankException("Account not found by accountNumber: " + request.getFromAccountNumber()));
 
         if (fromAccount.getStatus().equalsIgnoreCase(INACTIVE)) {
             throw new BankException("Account is Inactive");
@@ -121,7 +122,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new BankException("Transaction amount exists daily transaction limit!");
         }
 
-        Double totalTrx = getTodayTotalTrx(request.getFromAccountId()) + request.getTransactionAmount();
+        Double totalTrx = getTodayTotalTrx(fromAccount.getId()) + request.getTransactionAmount();
 
         if (totalTrx > fromAccount.getDailyTransactionLimit()) {
             throw new BankException("Transaction amount exists daily transaction limit!");
@@ -142,11 +143,11 @@ public class TransactionServiceImpl implements TransactionService {
 
     private Transaction doTransfer(TransactionRequestDto request) {
 
-        if (request.getToAccountId() == null || request.getFromAccountId() == null) {
-            throw new BankException("toAccountId, fromAccountId are required.");
+        if (request.getToAccountNumber() == null || request.getFromAccountNumber() == null) {
+            throw new BankException("toAccountNumber, fromAccountNumber are required.");
         }
 
-        Account fromAccount = accountRepository.findById(request.getFromAccountId()).orElseThrow(() -> new BankException("fromAccount not found by id: " + request.getFromAccountId()));
+        Account fromAccount = accountRepository.findByAccountNumber(request.getFromAccountNumber()).orElseThrow(() -> new BankException("fromAccount not found by accountNumber: " + request.getFromAccountNumber()));
         if (fromAccount.getStatus().equalsIgnoreCase(INACTIVE)) {
             throw new BankException("fromAccount is Inactive");
         }
@@ -156,33 +157,33 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         if (request.getTransactionAmount() > fromAccount.getDailyTransactionLimit()) {
-            throw new BankException("Transaction amount exists daily transaction limit for fromAccountId: " + request.getFromAccountId());
+            throw new BankException("Transaction amount exists daily transaction limit for fromAccountNumber: " + request.getFromAccountNumber());
         }
 
-        Double fromTotalTrx = getTodayTotalTrx(request.getFromAccountId()) + request.getTransactionAmount();
+        Double fromTotalTrx = getTodayTotalTrx(fromAccount.getId()) + request.getTransactionAmount();
 
         if (fromTotalTrx > fromAccount.getDailyTransactionLimit()) {
-            throw new BankException("Transaction amount exists daily transaction limit for fromAccountId: " + request.getFromAccountId());
+            throw new BankException("Transaction amount exists daily transaction limit for fromAccountNumber: " + request.getFromAccountNumber());
 
         }
 
         fromAccount.setBalance(fromAccount.getBalance() - request.getTransactionAmount());
         accountRepository.save(fromAccount);
 
-        Account toAccount = accountRepository.findById(request.getToAccountId()).orElseThrow(() -> new BankException("toAccount not found by id: " + request.getToAccountId()));
+        Account toAccount = accountRepository.findByAccountNumber(request.getToAccountNumber()).orElseThrow(() -> new BankException("toAccount not found by accountNumber: " + request.getToAccountNumber()));
         if (toAccount.getStatus().equalsIgnoreCase(INACTIVE)) {
             throw new BankException("toAccount is Inactive");
         }
 
         if (request.getTransactionAmount() > toAccount.getDailyTransactionLimit()) {
-            throw new BankException("Transaction amount exists daily transaction limit for toAccountId: " + request.getToAccountId());
+            throw new BankException("Transaction amount exists daily transaction limit for toAccountNumber: " + request.getToAccountNumber());
 
         }
 
-        Double toTotalTrx = getTodayTotalTrx(request.getToAccountId()) + request.getTransactionAmount();
+        Double toTotalTrx = getTodayTotalTrx(toAccount.getId()) + request.getTransactionAmount();
 
         if (toTotalTrx > toAccount.getDailyTransactionLimit()) {
-            throw new BankException("Transaction amount exists daily transaction limit for toAccountId: " + request.getToAccountId());
+            throw new BankException("Transaction amount exists daily transaction limit for toAccountNumber: " + request.getToAccountNumber());
         }
 
         toAccount.setBalance(toAccount.getBalance() + request.getTransactionAmount());
