@@ -1,5 +1,6 @@
 package com.bank.entity;
 
+import com.bank.utils.GenderEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class Customer {
     private String address;
     private String mobileNo;
     private String nid;
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private List<Account> accounts;

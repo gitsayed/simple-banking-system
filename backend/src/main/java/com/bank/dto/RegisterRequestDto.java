@@ -1,5 +1,6 @@
 package com.bank.dto;
 
+import com.bank.utils.AcStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -16,10 +17,10 @@ public class RegisterRequestDto {
     private String email;
     @NotEmpty(message = "mobileNo is required")
     private String mobileNo;
-
     private String password;
     private String employeeId;
-
+    private String dept;
+    private AcStatus status;
     private List<Long> roleIds;
 
 }

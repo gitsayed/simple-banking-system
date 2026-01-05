@@ -32,6 +32,7 @@ public class CustomerServiceImpl implements  CustomerService{
             customer.setName(request.getName())
                     .setAddress(request.getAddress())
                     .setMobileNo(request.getMobileNo())
+                    .setGender(request.getGender())
                     .setNid(request.getNid());
 
             customer = customerRepository.save(customer);
@@ -51,6 +52,7 @@ public class CustomerServiceImpl implements  CustomerService{
             customer.setName(request.getName()!=null? request.getName(): customer.getName())
                     .setAddress(request.getAddress()!=null? request.getAddress(): customer.getAddress())
                     .setMobileNo(request.getMobileNo()!=null? request.getMobileNo(): customer.getMobileNo())
+                    .setGender(request.getGender()!=null? request.getGender(): customer.getGender())
                     .setNid(request.getNid()!=null? request.getNid(): customer.getNid());
 
             customer = customerRepository.save(customer);

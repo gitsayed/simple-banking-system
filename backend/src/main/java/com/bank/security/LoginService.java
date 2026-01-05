@@ -71,7 +71,8 @@ public class LoginService {
             user.setUsername(request.getUsername())
                     .setEmail(request.getEmail())
                     .setMobileNo(request.getMobileNo())
-                    .setStatus(AcStatus.ACTIVE)
+                    .setStatus(request.getStatus())
+                    .setDept(request.getDept())
                     .setRoles(rolesList)
                     .setPassword(passwordEncoder.encode(request.getPassword()));
 

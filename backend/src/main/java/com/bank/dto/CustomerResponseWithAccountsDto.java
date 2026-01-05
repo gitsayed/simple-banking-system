@@ -1,11 +1,14 @@
 package com.bank.dto;
 
+import com.bank.utils.GenderEnum;
+
 import java.util.List;
 
 public interface CustomerResponseWithAccountsDto {
 
      Long getId();
      String getName();
+     GenderEnum getGender();
      String getAddress();
      String getMobileNo();
      String getNid();
