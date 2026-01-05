@@ -24,7 +24,7 @@ export class RoleFormDialogComponent implements OnInit {
     private toast: ToasterService,
     private userService: UserService,
     private loader: LoaderService,
-    private dialogRef: MatDialogRef<UserFormDialogComponent>,
+    private dialogRef: MatDialogRef<RoleFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data && data?.action) {

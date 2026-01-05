@@ -6,8 +6,8 @@ import { LoaderService } from '../../_loader/loader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountViewDialogComponent } from '../components/account-view-dialog/account-view-dialog.component';
 import { AccountFormDialogComponent } from '../components/account-form-dialog/account-form-dialog.component';
-import { AccountService } from '../../_services/account.service';
 import { TransactionService } from '../../_services/transaction.service';
+import { DepositFormDialogComponent } from '../components/deposit-form-dialog/deposit-form-dialog.component';
 
 
 @Component({
@@ -88,8 +88,9 @@ export class TransactionManagementComponent implements OnInit {
   }
 
 
-  openCustomerAddDialog() {
-    const dialogRef = this.dialog.open(AccountFormDialogComponent, {
+  openDepositDialog() {
+
+    const dialogRef = this.dialog.open(DepositFormDialogComponent, {
       width: '60%',
       disableClose: true,
       data: { action: "add" }
@@ -105,12 +106,11 @@ export class TransactionManagementComponent implements OnInit {
 
 
 
-  openCustomerUpdateDialog(row: any) {
-
+   openCustomerAddDialog() {
     const dialogRef = this.dialog.open(AccountFormDialogComponent, {
       width: '60%',
       disableClose: true,
-      data: { action: "update", accountInfo: row }
+      data: { action: "update", accountInfo: null }
     });
 
     dialogRef.afterClosed().subscribe(result => {

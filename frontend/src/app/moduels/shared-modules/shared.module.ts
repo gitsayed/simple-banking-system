@@ -20,12 +20,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { NumberDotDirective } from '../components/directives/number-dot.directive';
 
 
 @NgModule({
   declarations:[
-    NumberDotDirective
+  
   ],
   imports: [
     ToastNoAnimationModule.forRoot(),
@@ -71,7 +70,7 @@ import { NumberDotDirective } from '../components/directives/number-dot.directiv
     MatDialogModule,
     MatSelectModule,
     MatAutocompleteModule,
-    NumberDotDirective
+
   ]
 })
 export class SharedModule { }

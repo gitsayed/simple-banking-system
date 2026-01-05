@@ -32,12 +32,13 @@ import { TransactionManagementComponent } from './moduels/transaction-management
 import { AccountViewDialogComponent } from './moduels/components/account-view-dialog/account-view-dialog.component';
 import { AccountFormDialogComponent } from './moduels/components/account-form-dialog/account-form-dialog.component';
 import { NumberDotDirective } from './moduels/components/directives/number-dot.directive';
+import { DepositFormDialogComponent } from './moduels/components/deposit-form-dialog/deposit-form-dialog.component';
 
 
 
 @NgModule({
   declarations: [
-    
+    NumberDotDirective,
     AppComponent,
     DefaultLayoutComponent,
     LoginComponent,
@@ -57,7 +58,8 @@ import { NumberDotDirective } from './moduels/components/directives/number-dot.d
     AccountManagementComponent,
     TransactionManagementComponent,
     AccountViewDialogComponent,
-    AccountFormDialogComponent
+    AccountFormDialogComponent,
+    DepositFormDialogComponent
   ],
   imports: [
     AppRoutingModule,

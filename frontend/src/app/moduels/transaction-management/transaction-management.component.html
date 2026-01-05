@@ -1,6 +1,6 @@
 <mat-card appearance="outlined">
     <mat-card-header>
-        <button mat-flat-button (click)="openCustomerAddDialog()" color="primary">Deposit</button>
+        <button mat-flat-button (click)="openDepositDialog()" color="primary">Deposit</button>
         <button mat-flat-button (click)="openCustomerAddDialog()" class="widthraw-button-color">Widthraw</button>
         <button mat-flat-button class="transfer-button-color">Transfer</button>
     </mat-card-header>
@@ -66,6 +66,7 @@
             </div>
 
             <mat-paginator [length]="totalElements" [pageSize]="size" [pageSizeOptions]="[ 5, 10, 20]"
+            showFirstLastButtons
                 (page)="onPageChange($event)">
             </mat-paginator>
 

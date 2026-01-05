@@ -25,7 +25,7 @@ export class CustomerFormDialogComponent {
     private toast: ToasterService,
     private customerService: CustomerService,
     private loader: LoaderService,
-    private dialogRef: MatDialogRef<UserFormDialogComponent>,
+    private dialogRef: MatDialogRef<CustomerFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data && data?.action) {

@@ -31,7 +31,7 @@ export class AccountFormDialogComponent {
     private customerService: CustomerService,
     private accountService: AccountService,
     private loader: LoaderService,
-    private dialogRef: MatDialogRef<UserFormDialogComponent>,
+    private dialogRef: MatDialogRef<AccountFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data && data?.action) {

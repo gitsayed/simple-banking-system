@@ -42,7 +42,7 @@ export class TransactionService extends BaseService {
   }
 
 
-  createTransaction(payload: IAccount): Observable<any> {
+  submitTransaction(payload: IAccount): Observable<any> {
     let url = TRANSACTION_API;
     return this.http.post(url, payload, httpOptions);
   }
