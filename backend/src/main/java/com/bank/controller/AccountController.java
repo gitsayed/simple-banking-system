@@ -55,6 +55,14 @@ public class AccountController {
         return ResponseEntity.ok(accountDetail);
     }
 
+    @GetMapping("by-number/{number}")
+    @Operation(summary = "Fetch Account By Number.")
+    public ResponseEntity<AccountResponseWithCustomerDto> fetchAccountByNumber(@PathVariable String number) {
+        log.info("Fetching account by number: {}", number);
+        AccountResponseWithCustomerDto accountDetail = accountService.findAccountByNumber(number);
+        return ResponseEntity.ok(accountDetail);
+    }
+
     @GetMapping("/page")
     @Operation(summary = "Fetch Account pagination with search.")
     public ResponseEntity<Page<AccountResponseDto>>

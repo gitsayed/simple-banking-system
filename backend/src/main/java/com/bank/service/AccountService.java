@@ -17,4 +17,6 @@ public interface AccountService {
     AccountResponseWithCustomerDto findAccountById(Long id);
     Page<AccountResponseDto> getPagedAccounts(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status, Pageable pageable);
     List<AccountResponseDto> getAccountList(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status);
+    AccountResponseWithCustomerDto findAccountByNumber(String accountNumber);
 }
+

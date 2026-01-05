@@ -33,6 +33,8 @@ import { AccountViewDialogComponent } from './moduels/components/account-view-di
 import { AccountFormDialogComponent } from './moduels/components/account-form-dialog/account-form-dialog.component';
 import { NumberDotDirective } from './moduels/components/directives/number-dot.directive';
 import { DepositFormDialogComponent } from './moduels/components/deposit-form-dialog/deposit-form-dialog.component';
+import { TransactionViewDialogComponent } from './moduels/components/transaction-view-dialog/transaction-view-dialog.component';
+import { ConfirmDialogComponent } from './moduels/components/confirm-dialog/confirm-dialog.component';
 
 
 
@@ -59,7 +61,9 @@ import { DepositFormDialogComponent } from './moduels/components/deposit-form-di
     TransactionManagementComponent,
     AccountViewDialogComponent,
     AccountFormDialogComponent,
-    DepositFormDialogComponent
+    DepositFormDialogComponent,
+    TransactionViewDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     AppRoutingModule,

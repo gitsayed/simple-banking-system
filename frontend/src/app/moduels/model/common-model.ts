@@ -50,3 +50,12 @@ export interface IAccountUpdate {
     dailyTransactionLimit: number;
 
 }
+
+export interface ISubmitTransaction {
+    transactionType: 'DEPROIT'| 'WITHDRAW'| 'TRANSFER';
+    fromAccountNumber?: string;
+    toAccountNumber?: string;
+    transactionAmount: number;
+    remarks?: number;
+
+}

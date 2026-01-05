@@ -1,0 +1,16 @@
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.form-container {
+  margin-top: 2%;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 12px;
+}

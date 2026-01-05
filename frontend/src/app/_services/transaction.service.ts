@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { BaseService } from './base-services';
-import { IAccount, IAccountUpdate } from '../moduels/model/common-model';
+import { IAccount, IAccountUpdate, ISubmitTransaction } from '../moduels/model/common-model';
 
 
 const TRANSACTION_API = environment.apiBaseUrl + '/api/v1/transactions';
@@ -42,14 +42,11 @@ export class TransactionService extends BaseService {
   }
 
 
-  submitTransaction(payload: IAccount): Observable<any> {
+  submitTransaction(payload: ISubmitTransaction): Observable<any> {
     let url = TRANSACTION_API;
     return this.http.post(url, payload, httpOptions);
   }
 
-  updateTransaction(id:number, payload: IAccountUpdate): Observable<any> {
-    let url = TRANSACTION_API+`/${id}`;
-    return this.http.put(url, payload, httpOptions);
-  }
+
 
 }

@@ -1,0 +1,50 @@
+<!-- Header -->
+<h1 mat-dialog-title style="font-weight: bolder;">
+    Deposit to Account
+    <button mat-icon-button class="close-btn" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</h1>
+
+<!-- Content -->
+<div >
+    <mat-dialog-content class="form-container">
+
+        <form [formGroup]="depositForm">
+            <mat-form-field appearance="outline">
+                <mat-label>Account Number</mat-label>
+                <input matInput formControlName="toAccountNumber" (keyup)="onKeyup($event)">
+                <mat-error *ngIf="depositForm.get('toAccountNumber')?.hasError('required')">
+                    Account Number is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Transaction Amount</mat-label>
+                <input matInput formControlName="transactionAmount" appNumberDot>
+                <mat-error *ngIf="depositForm.get('transactionAmount')?.hasError('required')">
+                    Transaction Amount is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Remarks</mat-label>
+                <input matInput formControlName="remarks">
+                <mat-error *ngIf="depositForm.get('remarks')?.hasError('required')">
+                    Remarks is required
+                </mat-error>
+            </mat-form-field>
+
+        </form>
+
+    </mat-dialog-content>
+
+    <!-- Footer -->
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="close()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="confirm()" [disabled]="depositForm.invalid">
+            Submit
+        </button>
+    </mat-dialog-actions>
+</div>
+

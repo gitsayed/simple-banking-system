@@ -76,6 +76,10 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAccountById(id);
     }
 
+    @Override
+    public AccountResponseWithCustomerDto findAccountByNumber(String accountNumber) {
+        return accountRepository.findAccountByAccountNumber(accountNumber);
+    }
 
     @Override
     public Page<AccountResponseDto> getPagedAccounts(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status, Pageable pageable) {
@@ -86,4 +90,6 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountResponseDto> getAccountList(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status) {
        return accountRepository.getAccountList(id, accountType, accountNumber, dailyTransactionLimit, status);
     }
+
+
 }

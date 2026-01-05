@@ -35,6 +35,11 @@ export class AccountService extends BaseService {
     return this.http.get(url, httpOptions);
   }
 
+  findAccountByNumber(accountNumber: string): Observable<any> {
+    let url = `${ACCOUNT_API}/by-number/${accountNumber}`;
+    return this.http.get(url, httpOptions);
+  }
+
   fetchAccountList(searchMap: Map<string, any>): Observable<any> {
     let param = this.mapToQueryString(searchMap);
     let url = ACCOUNT_API + '/list' + param

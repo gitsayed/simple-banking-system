@@ -43,6 +43,10 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query(value = FIND_BY_ID)
     AccountResponseWithCustomerDto findAccountById(Long id);
 
+    String FIND_BY_NUMBER = COMMON_AC_SQL + " WHERE ac.accountNumber = :accountNumber";
+
+    @Query(value = FIND_BY_NUMBER)
+    AccountResponseWithCustomerDto findAccountByAccountNumber(String accountNumber);
 
     String AC_PAGED_CONDITION = """
             WHERE 1=1
