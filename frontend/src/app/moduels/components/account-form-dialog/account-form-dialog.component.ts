@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IAccount, ICustomer } from '../../model/common-model';
+import { IAccount, IAccountUpdate, ICustomer } from '../../model/common-model';
 import { ToasterService } from '../../../_services/toaster.service';
 import { LoaderService } from '../../../_loader/loader.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -18,9 +18,12 @@ import { map, startWith } from 'rxjs';
 export class AccountFormDialogComponent {
 
   accountForm!: FormGroup;
+  accountUpdateForm!: FormGroup;
   action = "add";
   accountInfo: IAccount | null = {} as IAccount;
   customerList: ICustomer[] | null = [];
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -41,19 +44,54 @@ export class AccountFormDialogComponent {
 
   ngOnInit(): void {
     this.getCustomerList(null);
-    this.inirAccountForm();
+    this.initAccountUpdateForm()
+    if (this.action == 'add') {
+      this.initAccountForm();
+    }
+
+    if (this.action == 'update' && this.accountInfo?.id) {
+      this.getAccountById(this.accountInfo?.id);
+    }
+
 
   }
 
-  inirAccountForm() {
+  initAccountForm() {
     this.accountForm = this.fb.group({
       customer: [this.accountInfo?.customer, Validators.required],
       accountType: [this.accountInfo?.accountType, Validators.required],
       status: [this.accountInfo?.status, Validators.required],
       dailyTransactionLimit: [this.accountInfo?.dailyTransactionLimit, Validators.required],
-      balance: [this.accountInfo?.balance, Validators.required],
+      balance: [this.accountInfo?.balance, Validators.required]
 
     });
+  }
+
+  initAccountUpdateForm() {
+    this.accountUpdateForm = this.fb.group({
+      customer: [{ value: this.accountInfo?.customer?.name, disabled: true }],
+      accountNumber: [{ value: this.accountInfo?.accountNumber, disabled: true }],
+      balance: [{ value: this.accountInfo?.balance, disabled: true }],
+      accountType: [this.accountInfo?.accountType, Validators.required],
+      status: [this.accountInfo?.status, Validators.required],
+      dailyTransactionLimit: [this.accountInfo?.dailyTransactionLimit, Validators.required],
+    });
+
+  }
+
+  getAccountById(id: number) {
+    this.loader.show();
+    this.accountService.findAccountById(id).subscribe({
+      next: res => {
+        this.loader.hide();
+        this.accountInfo = res;
+        this.initAccountUpdateForm();
+      },
+      error: err => {
+        this.loader.hide();
+        this.toast.error(err.error.message);
+      }
+    })
   }
 
   submit(): void {
@@ -82,30 +120,44 @@ export class AccountFormDialogComponent {
           }
         });
       }
-      // else if (this.action == "update" && this.accountInfo?.id) {
-      //   this.accountService.updateAccount(this.accountInfo.id, null).subscribe({
-      //     next: res => {
-      //       this.loader.hide();
-      //       this.toast.success("Account has been updated successfully.");
-      //       this.dialogRef.close("ok");
-      //     },
-      //     error: err => {
-      //       this.loader.hide();
-      //       this.toast.error(err.error.message);
-      //     }
-      //   });
-      // }
-
 
     }
   }
 
+  submitUpdate() {
+
+    if (this.accountUpdateForm.valid) {
+      let formValue = this.accountUpdateForm.value;
+      let payload: IAccountUpdate = {
+        accountType: formValue.accountType,
+        status: formValue?.status,
+        dailyTransactionLimit: formValue.dailyTransactionLimit,
+      };
+
+
+      if (this.action == "update" && this.accountInfo?.id) {
+        this.accountService.updateAccount(this.accountInfo.id, payload).subscribe({
+          next: res => {
+            this.loader.hide();
+            this.toast.success("Account has been updated successfully.");
+            this.dialogRef.close("ok");
+          },
+          error: err => {
+            this.loader.hide();
+            this.toast.error(err.error.message);
+          }
+        });
+      }
+    }
+  }
+
   onKeyup(event: any) {
-    console.log('onKeyup', event);
     let searchName = event.target.value;
     searchName = searchName?.trim();
     this.getCustomerList(searchName);
   }
+
+
 
   getCustomerList(name: string | null) {
     let paramMap = new Map<string, any>();
@@ -134,4 +186,6 @@ export class AccountFormDialogComponent {
   close(): void {
     this.dialogRef.close();
   }
+
+  
 }

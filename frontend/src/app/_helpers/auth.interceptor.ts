@@ -25,7 +25,6 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
 
     this.activeRequests++;
-    this.loaderService.show();
 
     const token = this.tokenService.getToken();
 
@@ -41,7 +40,6 @@ export class AuthInterceptor implements HttpInterceptor {
       finalize(() => {
         this.activeRequests--;
         if (this.activeRequests === 0) {
-          this.loaderService.hide();
         }
       })
     );

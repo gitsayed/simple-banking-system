@@ -43,3 +43,10 @@ export interface IAccount {
     dailyTransactionLimit: number;
 
 }
+
+export interface IAccountUpdate {
+    accountType: string;
+    status: string;
+    dailyTransactionLimit: number;
+
+}

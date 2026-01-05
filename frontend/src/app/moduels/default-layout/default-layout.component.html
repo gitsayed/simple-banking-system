@@ -1,7 +1,7 @@
 <mat-toolbar style="background-color:#DEC19B; display: flex;">
   <span class="bank-title">CBS Bank</span>
   <span style="margin-left: auto; display: flex; gap: 15px;">
-    <span class="profile">Profile</span>
+    <span class="profile" (click)="goToProfile()">Profile</span>
     <span class="logout" (click)="logout()">Logout</span>
   </span>
 </mat-toolbar>

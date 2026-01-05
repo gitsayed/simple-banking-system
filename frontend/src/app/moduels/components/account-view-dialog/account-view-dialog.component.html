@@ -1,1 +1,52 @@
-<p>account-view-dialog works!</p>
+<div class="dialog-header">
+    <h2>Account Information</h2>
+
+    <button mat-icon-button class="close-btn" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content class="detail-container" *ngIf="accountInfo">
+
+
+    <div class="detail-row odd">
+        <div class="label">Account ID</div>
+        <div class="value">{{ accountInfo.id }}</div>
+    </div>
+
+    <div class="detail-row even">
+        <div class="label">Account Number</div>
+        <div class="value">{{ accountInfo.accountNumber }}</div>
+    </div>
+    <div class="detail-row odd">
+        <div class="label">Customer ID</div>
+        <div class="value">{{ accountInfo.customer?.id }}</div>
+    </div>
+    
+    <div class="detail-row even">
+        <div class="label">Customer Name</div>
+        <div class="value">{{ accountInfo.customer?.name }}</div>
+    </div>
+    <div class="detail-row odd">
+        <div class="label">Account Type</div>
+        <div class="value">{{ accountInfo.accountType }}</div>
+    </div>
+    <div class="detail-row even">
+        <div class="label">Status</div>
+        <div class="value">{{ accountInfo.status }}</div>
+    </div>
+    <div class="detail-row odd">
+        <div class="label">Daily Transaction Limit</div>
+        <div class="value">{{ accountInfo.dailyTransactionLimit }}</div>
+    </div>
+        <div class="detail-row even">
+        <div class="label">Current Balance</div>
+        <div class="value">{{ accountInfo.balance }}</div>
+    </div>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

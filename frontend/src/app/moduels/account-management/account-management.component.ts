@@ -108,7 +108,7 @@ export class AccountManagementComponent implements OnInit {
     const dialogRef = this.dialog.open(AccountFormDialogComponent, {
       width: '60%',
       disableClose: true,
-      data: { action: "update", customerInfo: row }
+      data: { action: "update", accountInfo: row }
     });
 
     dialogRef.afterClosed().subscribe(result => {

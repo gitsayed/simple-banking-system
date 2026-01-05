@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { BaseService } from './base-services';
-import { IAccount } from '../moduels/model/common-model';
+import { IAccount, IAccountUpdate } from '../moduels/model/common-model';
 
 
 const ACCOUNT_API = environment.apiBaseUrl + '/api/v1/accounts';
@@ -47,7 +47,7 @@ export class AccountService extends BaseService {
     return this.http.post(url, payload, httpOptions);
   }
 
-  updateAccount(id:number, payload: IAccount): Observable<any> {
+  updateAccount(id:number, payload: IAccountUpdate): Observable<any> {
     let url = ACCOUNT_API+`/${id}`;
     return this.http.put(url, payload, httpOptions);
   }

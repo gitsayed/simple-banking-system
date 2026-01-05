@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes, withEnabledBlockingInitialNavigation } from '@angular/router';
+import {  RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './moduels/login/login.component';
 import { AuthGuard } from './_authGuard/auth.guard';
@@ -45,19 +45,8 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
     ]
-  },
-  // {
-  //   path: 'transactions',
-  //   loadChildren: () =>
-  //     import('./features/transaction/transaction.module')
-  //       .then(m => m.TransactionModule)
-  // },
-  // {
-  //   path: 'statement',
-  //   loadChildren: () =>
-  //     import('./features/statement/statement.module')
-  //       .then(m => m.StatementModule)
-  // }
+  }
+
 ];
 
 @NgModule({
