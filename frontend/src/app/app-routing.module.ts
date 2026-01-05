@@ -1,0 +1,65 @@
+import { NgModule } from '@angular/core';
+import { PreloadAllModules, RouterModule, Routes, withEnabledBlockingInitialNavigation } from '@angular/router';
+
+import { LoginComponent } from './moduels/login/login.component';
+import { AuthGuard } from './_authGuard/auth.guard';
+import { DefaultLayoutComponent } from './moduels/default-layout';
+import { ProfileComponent } from './moduels/profile/profile.component';
+import { UserManagementComponent } from './moduels/user-management/user-management.component';
+import { CustomerManagementComponent } from './moduels/customer-management/customer-management.component';
+
+const routes: Routes = [
+
+  { path: 'login', component: LoginComponent },
+
+  {
+    path: '',
+    component: DefaultLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'user-management',
+        component: UserManagementComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'customers',
+        component: CustomerManagementComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'accounts',
+        component: CustomerManagementComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'transactions',
+        component: CustomerManagementComponent,
+        canActivate: [AuthGuard],
+      },
+    ]
+  },
+  // {
+  //   path: 'transactions',
+  //   loadChildren: () =>
+  //     import('./features/transaction/transaction.module')
+  //       .then(m => m.TransactionModule)
+  // },
+  // {
+  //   path: 'statement',
+  //   loadChildren: () =>
+  //     import('./features/statement/statement.module')
+  //       .then(m => m.StatementModule)
+  // }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

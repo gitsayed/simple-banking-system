@@ -1,0 +1,14 @@
+<section>
+  <mat-button-toggle-group
+  [formControl]="pageIndicatorControl"
+    name="favoriteColor"
+    aria-label="Favorite Color"
+  >
+    <mat-button-toggle value="user">Users</mat-button-toggle>
+    <mat-button-toggle value="role">Roles</mat-button-toggle>
+  </mat-button-toggle-group>
+</section>
+<br/>
+<app-users *ngIf="pageIndicatorControl.value=='user'"></app-users>
+<app-role *ngIf="pageIndicatorControl.value=='role'"></app-role>
+

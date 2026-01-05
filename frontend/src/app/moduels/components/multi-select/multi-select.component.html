@@ -1,0 +1,26 @@
+<mat-form-field appearance="outline" class="full-width">
+  <mat-label>{{ label }}</mat-label>
+
+  <mat-select
+    [formControl]="selectCtrl"
+    multiple
+    (selectionChange)="onSelectionChange()"
+    panelClass="role-panel">
+  
+      <input
+        matInput
+        placeholder="Type to search..." style="padding-left: 10%;"
+        [formControl]="searchCtrl"
+        (keyup)="onKeyup()"
+        (click)="$event.stopPropagation()">
+  
+
+  
+    <mat-option
+      *ngFor="let role of roles"
+      [value]="role.value">
+      {{ role.name }}
+    </mat-option>
+
+  </mat-select>
+</mat-form-field>

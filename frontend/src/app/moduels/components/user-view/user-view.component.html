@@ -1,0 +1,61 @@
+
+<div class="dialog-header">
+  <h2>User Information</h2>
+
+  <button
+    mat-icon-button
+    class="close-btn"
+    (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="detail-container">
+
+
+  <div class="detail-row odd">
+    <div class="label">ID</div>
+    <div class="value">{{ data.id }}</div>
+  </div>
+
+  <div class="detail-row even">
+    <div class="label">Username</div>
+    <div class="value">{{ data.username }}</div>
+  </div>
+
+  <div class="detail-row odd">
+    <div class="label">Mobile</div>
+    <div class="value">{{ data.mobileNo }}</div>
+  </div>
+
+  <div class="detail-row even">
+    <div class="label">Email</div>
+    <div class="value">{{ data.email }}</div>
+  </div>
+
+  <div class="detail-row odd">
+    <div class="label">Status</div>
+    <div class="value">{{ data.status }}</div>
+  </div>
+
+  <div class="detail-row even">
+    <div class="label">Department</div>
+    <div class="value">{{ data.dept }}</div>
+  </div>
+
+    <div class="detail-row even">
+    <div class="label">Roles</div>
+    <div class="value roles-chips">  <mat-chip-set>
+          <mat-chip *ngFor="let role of data.roles">
+            {{ role.name }}
+          </mat-chip>
+        </mat-chip-set>
+           <div *ngIf="data.roles?.length === 0">No roles assigned</div>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

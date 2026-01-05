@@ -1,0 +1,79 @@
+<!-- Header -->
+<h2 mat-dialog-title>
+  {{action=='add'?'Create': 'Update'}} User
+  <button mat-icon-button class="close-btn" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<!-- Content -->
+<mat-dialog-content class="form-container">
+
+  <form [formGroup]="userForm">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username">
+      <mat-error *ngIf="userForm.get('username')?.hasError('required')">
+        Username is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Employee ID</mat-label>
+      <input matInput formControlName="employeeId">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Mobile Number</mat-label>
+      <input matInput formControlName="mobileNo">
+      <mat-error *ngIf="userForm.get('mobileNo')?.hasError('required')">
+        Mobile Number is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+      <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+        Email is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password">
+      <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+        Password is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="ACTIVE">Active</mat-option>
+        <mat-option value="INACTIVE">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Department</mat-label>
+      <input matInput formControlName="dept">
+    </mat-form-field>
+    
+    <multi-select [roles]="roleList" [label]="'Select Role'" (searchChange)="onRoleSearch($event)"
+      (selectionChange)="onRoleSelect($event)">
+    </multi-select>
+
+
+  </form>
+
+</mat-dialog-content>
+
+<!-- Footer -->
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="userForm.invalid">
+    Save
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,46 @@
+.profile-card {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px 12px;
+  margin-top: 16px;
+  align-items: baseline;
+}
+
+.label {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.value {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+@media (max-width: 600px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .label {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+}
+
+
+.roles-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.role-desc {
+  font-size: 0.85em;
+  opacity: 0.8;
+  margin-left: 6px;
+}

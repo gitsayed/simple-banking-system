@@ -1,0 +1,52 @@
+
+
+.bank-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #007BFF;
+}
+
+.profile {
+    cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #007BFF;
+}
+
+.logout {
+    cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #007BFF;
+}
+
+
+
+.dashboard-container {
+  height: calc(100vh - 64px);
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 220px;
+  background: #f7f7f7;
+
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidenav-content {
+  height: 100%;
+  padding: 16px;
+  background: #fafafa;
+}
+
+.active-link {
+  background-color: rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}

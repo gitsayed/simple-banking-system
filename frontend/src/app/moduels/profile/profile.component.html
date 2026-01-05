@@ -1,0 +1,44 @@
+<mat-card class="profile-card">
+  <mat-card-header>
+    <mat-card-title>Profile Information</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="info-grid" *ngIf="profile; else noData">
+
+      <div class="label">User Id</div>
+      <div class="value">{{ profile.id }}</div>
+
+      <div class="label">Employee Id</div>
+      <div class="value">{{ profile.employeeId }}</div>
+   
+      <div class="label">Username</div>
+      <div class="value">{{ profile.username }}</div>
+
+      <div class="label">Email</div>
+      <div class="value">{{ profile.email }}</div>
+
+      <div class="label" *ngIf="profile.mobileNo">Phone</div>
+      <div class="value" *ngIf="profile.mobileNo">{{ profile.mobileNo }}</div>
+
+      <div class="label" *ngIf="profile.dept">Department</div>
+      <div class="value" *ngIf="profile.dept">{{ profile.dept }}</div>
+
+      <div class="label">Roles</div>
+      <div class="value roles-chips">
+        <mat-chip-set>
+          <mat-chip *ngFor="let role of profile.roles">
+            {{ role.name }}
+          </mat-chip>
+        </mat-chip-set>
+        <div *ngIf="profile.roles.length === 0">No roles assigned</div>
+      </div>
+
+      
+    </div>
+
+    <ng-template #noData>
+      <p>No profile information available.</p>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

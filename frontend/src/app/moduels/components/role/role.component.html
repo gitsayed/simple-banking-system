@@ -1,0 +1,45 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+      <button mat-flat-button (click)="openRoleAddDialog()">Add Role</button>
+  </mat-card-header>
+  <mat-card-content style="margin-top: 2%;">
+    <mat-card class="table-card">
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+
+          <!-- ID -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+          </ng-container>
+
+          <!-- Username -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-button color="primary" >View</button>
+         
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
+           [class.odd-row]="i % 2 !== 0"
+            [class.even-row]="i % 2 === 0"
+            (click)="onRowClick(row)">
+          </tr>
+        </table>
+      </div>
+
+      <mat-paginator [length]="totalElements" [pageSize]="size" [pageSizeOptions]="[ 5, 10, 20]"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+
+    </mat-card>
+  </mat-card-content>
+</mat-card>

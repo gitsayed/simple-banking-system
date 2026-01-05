@@ -1,0 +1,32 @@
+
+.content-wrapper {
+  padding: 24px;
+  background: #f6f8fb;
+}
+
+
+.full-border-card {
+  width: 100%;
+  max-width: 900px;         
+  margin: 0 auto;          
+  
+  border: 1.5px solid #cfcfcf; 
+  border-radius: 8px;
+
+}
+
+
+.full-border-card mat-card-content {
+  padding-top: 16px;
+}
+
+
+.even-row {
+  background-color: #d6e6d6; 
+}
+
+
+
+.selected-row {
+  background-color: #e3f2fd !important;
+}

@@ -1,0 +1,16 @@
+// Step 1: Bootstrap core SASS helpers (required before toastr-bs4-alert)
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/_mixins';
+@import "bootstrap/scss/bootstrap.scss";
+
+
+@import 'ngx-toastr/toastr-bs4-alert';
+
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

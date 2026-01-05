@@ -1,0 +1,35 @@
+
+<div class="dialog-header">
+  <h2>Role Information</h2>
+
+  <button
+    mat-icon-button
+    class="close-btn"
+    (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="detail-container">
+
+
+  <div class="detail-row odd">
+    <div class="label">ID</div>
+    <div class="value">{{ data.id }}</div>
+  </div>
+
+  <div class="detail-row even">
+    <div class="label">Name</div>
+    <div class="value">{{ data.name }}</div>
+  </div>
+
+
+
+
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>
