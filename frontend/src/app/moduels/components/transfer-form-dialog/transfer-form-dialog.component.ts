@@ -78,7 +78,7 @@ export class TransferFormDialogComponent implements OnInit{
   }
 
   confirm() {
-    this.confirmService.confirm('Are you sure you want to proceed with deposit?')
+    this.confirmService.confirm('Are you sure you want to proceed with FUND TRANSFER?')
       .subscribe(confirmed => {
         if (confirmed) {
           this.submit();

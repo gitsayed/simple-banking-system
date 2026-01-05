@@ -78,7 +78,7 @@ export class DepositFormDialogComponent implements OnInit{
   }
 
   confirm() {
-    this.confirmService.confirm('Are you sure you want to proceed with deposit?')
+    this.confirmService.confirm('Are you sure you want to proceed with DEPOSIT?')
       .subscribe(confirmed => {
         if (confirmed) {
           this.submit();
