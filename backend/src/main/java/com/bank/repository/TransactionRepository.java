@@ -34,7 +34,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
               ORDER BY TRANSACTION_DATE DESC
             """;
 
-    @Query(value = GET_TOTAL_TRX_SUM_SQL , nativeQuery = true)
+    @Query(value = GET_TOTAL_TRX_SUM_SQL, nativeQuery = true)
     Double getTotalTrxByAccountId(Long accountId, LocalDate startDate, LocalDate endDate);
 
 
@@ -49,30 +49,31 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             c.ID 						 AS customerId,
             c.NAME 						 AS customerName,
             c.MOBILE_NO 				 AS mobileNo,
-    
+            
             CASE
                 WHEN t.FROM_ACCOUNT_ID = a.ID THEN t.AMOUNT
                 ELSE 0
             END AS debitAmount,
-
+            
             CASE
                 WHEN t.TO_ACCOUNT_ID = a.ID THEN t.AMOUNT
                 ELSE 0
             END AS creditAmount,
-    
+            
             CASE
                 WHEN t.TO_ACCOUNT_ID = a.ID THEN t.TO_AC_RUNNING_BALANCE
                 WHEN t.FROM_ACCOUNT_ID = a.ID THEN t.FROM_AC_RUNNING_BALANCE
                 ELSE 0
             END AS runningBalance
-    
+            
             FROM TRANSACTION t
-            JOIN ACCOUNT a ON a.ACCOUNT_NUMBER = :accountNumber  AND (t.FROM_ACCOUNT_ID = a.ID OR t.TO_ACCOUNT_ID = a.ID)
+            JOIN ACCOUNT a  ON t.FROM_ACCOUNT_ID = a.ID OR t.TO_ACCOUNT_ID = a.ID
             JOIN CUSTOMER c ON c.ID = a.CUSTOMER_ID 
-    
+            
             WHERE 1=1
-            AND TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') >= :startDate
-            AND TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') <= :endDate
+            AND (a.ACCOUNT_NUMBER = COALESCE(:accountNumber, a.ACCOUNT_NUMBER) )
+            AND TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') >= COALESCE(:startDate, TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') )
+            AND TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') <= COALESCE(:endDate,   TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') )
             AND t.TRANSACTION_TYPE = COALESCE(:transactionType, t.TRANSACTION_TYPE)
             
             ORDER BY t.TRANSACTION_DATE ASC
@@ -81,12 +82,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     String STMT_COUNT = """
             SELECT COUNT(t.id) as TOTAL
             FROM TRANSACTION t
-            JOIN ACCOUNT a ON a.ACCOUNT_NUMBER = :accountNumber  AND (t.FROM_ACCOUNT_ID = a.ID OR t.TO_ACCOUNT_ID = a.ID)
+            JOIN ACCOUNT a  ON t.FROM_ACCOUNT_ID = a.ID OR t.TO_ACCOUNT_ID = a.ID
             JOIN CUSTOMER c ON c.ID = a.CUSTOMER_ID 
-    
+            
             WHERE 1=1
-            AND TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') >= :startDate
-            AND TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') <= :endDate
+            AND (a.ACCOUNT_NUMBER = COALESCE(:accountNumber, a.ACCOUNT_NUMBER) )
+            AND TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') >= COALESCE(:startDate, TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') )
+            AND TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') <= COALESCE(:endDate,   TO_DATE(TO_CHAR(t.TRANSACTION_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') )
             AND t.TRANSACTION_TYPE = COALESCE(:transactionType, t.TRANSACTION_TYPE)
             """;
 

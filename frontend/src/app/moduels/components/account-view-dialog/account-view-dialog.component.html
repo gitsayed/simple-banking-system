@@ -37,11 +37,11 @@
     </div>
     <div class="detail-row odd">
         <div class="label">Daily Transaction Limit</div>
-        <div class="value">{{ accountInfo.dailyTransactionLimit }}</div>
+        <div class="value">{{ accountInfo.dailyTransactionLimit |number:'0.2'}}</div>
     </div>
         <div class="detail-row even">
         <div class="label">Current Balance</div>
-        <div class="value">{{ accountInfo.balance }}</div>
+        <div class="value">{{ accountInfo.balance |number:'0.2' }}</div>
     </div>
 
 </mat-dialog-content>
