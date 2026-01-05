@@ -31,3 +31,15 @@ export interface ICustomer {
     nid: string;
     accounts?: any[]
 }
+
+export interface IAccount {
+    id?: number|null;
+    customer?: any;
+    accountNumber?: string;
+    customerId: number;
+    accountType: string;
+    status: string;
+    balance: number;
+    dailyTransactionLimit: number;
+
+}

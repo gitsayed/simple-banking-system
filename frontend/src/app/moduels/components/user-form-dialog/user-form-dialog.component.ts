@@ -75,7 +75,7 @@ export class UserFormDialogComponent implements OnInit {
           label: item.name
         }));
       }
-    })
+    });
   }
 
   onRoleSearch(name: string) {

@@ -1,0 +1,79 @@
+<!-- Header -->
+<h2 mat-dialog-title>
+    {{action=='add'?'Create': 'Update'}} Account
+    <button mat-icon-button class="close-btn" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+
+<!-- Content -->
+<mat-dialog-content class="form-container">
+
+    <form [formGroup]="accountForm">
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Customer</mat-label>
+
+            <input type="text" matInput formControlName="customer" (keyup)="onKeyup($event)" [matAutocomplete]="auto">
+
+            <mat-autocomplete #auto="matAutocomplete"
+            [displayWith]="displayCustomer">
+                <mat-option *ngFor="let option of customerList" [value]="option">
+                    {{ option.name }}
+                </mat-option>
+            </mat-autocomplete>
+
+            <mat-error *ngIf="accountForm.get('customer')?.hasError('required')">
+                Customer is required
+            </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+            <mat-label>Account Type</mat-label>
+            <mat-select formControlName="accountType">
+                <mat-option value="Savings">Savings</mat-option>
+                <mat-option value="Current">Current</mat-option>
+            </mat-select>
+            <mat-error *ngIf="accountForm.get('accountType')?.hasError('required')">
+                Account Type is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+                <mat-option value="Active">Active</mat-option>
+                <mat-option value="Inactive">Inactive</mat-option>
+            </mat-select>
+            <mat-error *ngIf="accountForm.get('status')?.hasError('required')">
+                Status is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Daily Transaction Limit</mat-label>
+            <input matInput formControlName="dailyTransactionLimit" appNumberDot>
+            <mat-error *ngIf="accountForm.get('dailyTransactionLimit')?.hasError('required')">
+                Daily Transaction Limit is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Initial Balance</mat-label>
+            <input matInput formControlName="balance" appNumberDot>
+            <mat-error *ngIf="accountForm.get('balance')?.hasError('required')">
+                Initial Balance is required
+            </mat-error>
+        </mat-form-field>
+
+    </form>
+
+</mat-dialog-content>
+
+<!-- Footer -->
+<mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" [disabled]="accountForm.invalid">
+        Save
+    </button>
+</mat-dialog-actions>

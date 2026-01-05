@@ -7,6 +7,8 @@ import { DefaultLayoutComponent } from './moduels/default-layout';
 import { ProfileComponent } from './moduels/profile/profile.component';
 import { UserManagementComponent } from './moduels/user-management/user-management.component';
 import { CustomerManagementComponent } from './moduels/customer-management/customer-management.component';
+import { AccountManagementComponent } from './moduels/account-management/account-management.component';
+import { TransactionManagementComponent } from './moduels/transaction-management/transaction-management.component';
 
 const routes: Routes = [
 
@@ -34,12 +36,12 @@ const routes: Routes = [
       },
       {
         path: 'accounts',
-        component: CustomerManagementComponent,
+        component: AccountManagementComponent,
         canActivate: [AuthGuard],
       },
       {
         path: 'transactions',
-        component: CustomerManagementComponent,
+        component: TransactionManagementComponent,
         canActivate: [AuthGuard],
       },
     ]

@@ -27,11 +27,17 @@ import { RoleFormDialogComponent } from './moduels/components/role-form-dialog/r
 import { RoleViewDialogComponent } from './moduels/components/role-view-dialog/role-view-dialog.component';
 import { CustomerViewDialogComponent } from './moduels/components/customer-view-dialog/customer-view-dialog.component';
 import { CustomerFormDialogComponent } from './moduels/components/customer-form-dialog/customer-form-dialog.component';
+import { AccountManagementComponent } from './moduels/account-management/account-management.component';
+import { TransactionManagementComponent } from './moduels/transaction-management/transaction-management.component';
+import { AccountViewDialogComponent } from './moduels/components/account-view-dialog/account-view-dialog.component';
+import { AccountFormDialogComponent } from './moduels/components/account-form-dialog/account-form-dialog.component';
+import { NumberDotDirective } from './moduels/components/directives/number-dot.directive';
 
 
 
 @NgModule({
   declarations: [
+    
     AppComponent,
     DefaultLayoutComponent,
     LoginComponent,
@@ -47,7 +53,11 @@ import { CustomerFormDialogComponent } from './moduels/components/customer-form-
     RoleFormDialogComponent,
     RoleViewDialogComponent,
     CustomerViewDialogComponent,
-    CustomerFormDialogComponent
+    CustomerFormDialogComponent,
+    AccountManagementComponent,
+    TransactionManagementComponent,
+    AccountViewDialogComponent,
+    AccountFormDialogComponent
   ],
   imports: [
     AppRoutingModule,
