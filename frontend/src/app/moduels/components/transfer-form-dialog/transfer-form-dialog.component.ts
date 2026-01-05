@@ -9,16 +9,15 @@ import { TransactionService } from '../../../_services/transaction.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ConfirmDialogService } from '../../../_services/confirm.service';
 
-
 @Component({
-  selector: 'app-deposit-form-dialog',
+  selector: 'app-transfer-form-dialog',
   standalone: false,
-  templateUrl: './deposit-form-dialog.component.html',
-  styleUrl: './deposit-form-dialog.component.scss'
+  templateUrl: './transfer-form-dialog.component.html',
+  styleUrl: './transfer-form-dialog.component.scss'
 })
-export class DepositFormDialogComponent implements OnInit{
+export class TransferFormDialogComponent implements OnInit{
 
-  depositForm!: FormGroup;
+  transferForm!: FormGroup;
   searchSubject = new Subject<string>();
 
   accountInfo: IAccount | null = {} as IAccount;
@@ -31,7 +30,7 @@ export class DepositFormDialogComponent implements OnInit{
     private transactionService: TransactionService,
     private confirmService: ConfirmDialogService,
     private loader: LoaderService,
-    private dialogRef: MatDialogRef<DepositFormDialogComponent>,
+    private dialogRef: MatDialogRef<TransferFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -46,14 +45,15 @@ export class DepositFormDialogComponent implements OnInit{
       .subscribe(searchName => {
         this.getAccountByNumber(searchName);
       });
-    this.initDepositForm();
+    this.initTransferForm();
 
   }
 
-  initDepositForm() {
-    this.depositForm = this.fb.group({
+  initTransferForm() {
+    this.transferForm = this.fb.group({
+      fromAccountNumber: ['', Validators.required],
       toAccountNumber: ['', Validators.required],
-      transactionType: ["DEPOSIT", Validators.required],
+      transactionType: ["ACCOUNT_TRANSFER", Validators.required],
       transactionAmount: ['', Validators.required],
       remarks: [''],
     });
@@ -88,13 +88,13 @@ export class DepositFormDialogComponent implements OnInit{
 
   submit(): void {
 
-    if (this.depositForm.valid) {
-      let payload = this.depositForm.value as ISubmitTransaction;
+    if (this.transferForm.valid) {
+      let payload = this.transferForm.value as ISubmitTransaction;
       this.loader.show();
       this.transactionService.submitTransaction(payload).subscribe({
         next: res => {
           this.loader.hide();
-          this.toast.success("Deposit has been submitted successfully.");
+          this.toast.success("FUND TRANSFER has been submitted successfully.");
           this.dialogRef.close("ok");
         },
         error: err => {
@@ -123,3 +123,4 @@ export class DepositFormDialogComponent implements OnInit{
 
 
 }
+

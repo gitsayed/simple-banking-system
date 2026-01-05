@@ -1,12 +1,30 @@
  .mat-mdc-button-base {
-  margin: 8px 8px 8px 0;
-}
+   margin: 8px 8px 8px 0;
+ }
 
-.widthraw-button-color {
- background-color: #F65421;
-}
+ .widthraw-button-color {
+   background-color: #F65421;
+ }
 
 
-.transfer-button-color {
- background-color: #009284;
-}
+ .transfer-button-color {
+   background-color: #009284;
+ }
+
+ .debit {
+   font-weight: 500;
+   background-color: #03D3BF;
+   text-align: right;
+ }
+
+ .credit {
+   background-color: #F65421;
+   text-align: right;
+   font-weight: 500;
+ }
+
+ .balance {
+   font-weight: 500;
+   text-align: right;
+   background-color: #ACF756
+ }

@@ -8,6 +8,8 @@ import { AccountViewDialogComponent } from '../components/account-view-dialog/ac
 import { AccountFormDialogComponent } from '../components/account-form-dialog/account-form-dialog.component';
 import { TransactionService } from '../../_services/transaction.service';
 import { DepositFormDialogComponent } from '../components/deposit-form-dialog/deposit-form-dialog.component';
+import { WithdrawFormDialogComponent } from '../components/withdraw-form-dialog/withdraw-form-dialog.component';
+import { TransferFormDialogComponent } from '../components/transfer-form-dialog/transfer-form-dialog.component';
 
 
 @Component({
@@ -18,7 +20,7 @@ import { DepositFormDialogComponent } from '../components/deposit-form-dialog/de
 })
 export class TransactionManagementComponent implements OnInit {
 
-  displayedColumns = [ "transactionId", "transactionDate", "referenceNumber", "transactionType", "creditAmount", "debitAmount", "runningBalance", "remarks", "action"];
+  displayedColumns = ["transactionId", "transactionDate", "referenceNumber", "transactionType", "debitAmount", "creditAmount", "runningBalance", "remarks", "action"];
   dataSource = new MatTableDataSource<any>([]);
   totalElements = 0;
   totalPages = 0;
@@ -104,13 +106,11 @@ export class TransactionManagementComponent implements OnInit {
     });
   }
 
-
-
-   openCustomerAddDialog() {
-    const dialogRef = this.dialog.open(AccountFormDialogComponent, {
+  openWithdrawalDialog() {
+    const dialogRef = this.dialog.open(WithdrawFormDialogComponent, {
       width: '60%',
       disableClose: true,
-      data: { action: "update", accountInfo: null }
+      data: { action: "add" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -120,6 +120,22 @@ export class TransactionManagementComponent implements OnInit {
       }
     });
   }
+
+  openFundTransferDialog() {
+    const dialogRef = this.dialog.open(TransferFormDialogComponent, {
+      width: '60%',
+      disableClose: true,
+      data: { action: "add" }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.page = 0;
+        this.loadTransactions();
+      }
+    });
+  }
+
 
 
 

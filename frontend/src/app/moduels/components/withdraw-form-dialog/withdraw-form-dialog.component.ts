@@ -11,14 +11,14 @@ import { ConfirmDialogService } from '../../../_services/confirm.service';
 
 
 @Component({
-  selector: 'app-deposit-form-dialog',
+  selector: 'app-withdraw-form-dialog',
   standalone: false,
-  templateUrl: './deposit-form-dialog.component.html',
-  styleUrl: './deposit-form-dialog.component.scss'
+  templateUrl: './withdraw-form-dialog.component.html',
+  styleUrl: './withdraw-form-dialog.component.scss'
 })
-export class DepositFormDialogComponent implements OnInit{
+export class WithdrawFormDialogComponent implements OnInit{
 
-  depositForm!: FormGroup;
+  withdrawForm!: FormGroup;
   searchSubject = new Subject<string>();
 
   accountInfo: IAccount | null = {} as IAccount;
@@ -31,7 +31,7 @@ export class DepositFormDialogComponent implements OnInit{
     private transactionService: TransactionService,
     private confirmService: ConfirmDialogService,
     private loader: LoaderService,
-    private dialogRef: MatDialogRef<DepositFormDialogComponent>,
+    private dialogRef: MatDialogRef<WithdrawFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -46,14 +46,14 @@ export class DepositFormDialogComponent implements OnInit{
       .subscribe(searchName => {
         this.getAccountByNumber(searchName);
       });
-    this.initDepositForm();
+    this.initWithdrawForm();
 
   }
 
-  initDepositForm() {
-    this.depositForm = this.fb.group({
-      toAccountNumber: ['', Validators.required],
-      transactionType: ["DEPOSIT", Validators.required],
+  initWithdrawForm() {
+    this.withdrawForm = this.fb.group({
+      fromAccountNumber: ['', Validators.required],
+      transactionType: ["WITHDRAWAL", Validators.required],
       transactionAmount: ['', Validators.required],
       remarks: [''],
     });
@@ -67,8 +67,6 @@ export class DepositFormDialogComponent implements OnInit{
       next: res => {
         this.loader.hide();
         this.accountInfo = res;
-        console.log(' this.accountInfo', this.accountInfo);
-
       },
       error: err => {
         this.loader.hide();
@@ -78,7 +76,7 @@ export class DepositFormDialogComponent implements OnInit{
   }
 
   confirm() {
-    this.confirmService.confirm('Are you sure you want to proceed with deposit?')
+    this.confirmService.confirm('Are you sure you want to proceed with WITHDRAWAL?')
       .subscribe(confirmed => {
         if (confirmed) {
           this.submit();
@@ -88,13 +86,13 @@ export class DepositFormDialogComponent implements OnInit{
 
   submit(): void {
 
-    if (this.depositForm.valid) {
-      let payload = this.depositForm.value as ISubmitTransaction;
+    if (this.withdrawForm.valid) {
+      let payload = this.withdrawForm.value as ISubmitTransaction;
       this.loader.show();
       this.transactionService.submitTransaction(payload).subscribe({
         next: res => {
           this.loader.hide();
-          this.toast.success("Deposit has been submitted successfully.");
+          this.toast.success("WITHDRAWAL has been submitted successfully.");
           this.dialogRef.close("ok");
         },
         error: err => {
@@ -120,6 +118,7 @@ export class DepositFormDialogComponent implements OnInit{
   close(): void {
     this.dialogRef.close();
   }
+
 
 
 }
