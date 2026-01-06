@@ -33,7 +33,7 @@ export interface ICustomer {
 }
 
 export interface IAccount {
-    id?: number|null;
+    id?: number | null;
     customer?: any;
     accountNumber?: string;
     customerId: number;
@@ -52,10 +52,32 @@ export interface IAccountUpdate {
 }
 
 export interface ISubmitTransaction {
-    transactionType: 'DEPROIT'| 'WITHDRAW'| 'TRANSFER';
+    transactionType: 'DEPROIT' | 'WITHDRAW' | 'TRANSFER';
     fromAccountNumber?: string;
     toAccountNumber?: string;
     transactionAmount: number;
     remarks?: number;
+
+}
+
+export interface ITransactionDetail {
+    
+    creditAmount: number;
+    debitAmount: number;
+    fromAcRunningBalance: number;
+    fromAccountNumber: string;
+    fromCustomerId: number;
+    fromCustomerName: string;
+    fromMobileNo: string;
+    referenceNumber: string;
+    remarks: string;
+    toAcRunningBalance: number;
+    toAccountNumber: string;
+    toCustomerId: number
+    toCustomerName: string;
+    toMobileNo: string;
+    transactionDate: string;
+    transactionId: number
+    transactionType: string;
 
 }

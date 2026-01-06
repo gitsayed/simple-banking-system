@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { IAccount } from '../../model/common-model';
+import { IAccount, ITransactionDetail } from '../../model/common-model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AccountService } from '../../../_services/account.service';
 import { LoaderService } from '../../../_loader/loader.service';
 import { ToasterService } from '../../../_services/toaster.service';
+import { TransactionService } from '../../../_services/transaction.service';
 
 @Component({
   selector: 'app-transaction-view-dialog',
@@ -13,31 +14,31 @@ import { ToasterService } from '../../../_services/toaster.service';
 })
 export class TransactionViewDialogComponent implements OnInit {
 
-  accountInfo: IAccount | null = null;
+  transactionInfo: ITransactionDetail | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<TransactionViewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private accountService: AccountService,
+    private transactionService: TransactionService,
     private loader: LoaderService,
     private toast: ToasterService
   ) {
 
   }
   ngOnInit(): void {
-    if (this.data && this.data.id) {
-      this.getAccountById(this.data.id);
+    if (this.data && this.data.transactionId) {
+      this.findTransactionById(this.data.transactionId);
     }
 
   }
 
 
-  getAccountById(id: number) {
+  findTransactionById(id: number) {
     this.loader.show();
-    this.accountService.findAccountById(id).subscribe({
+    this.transactionService.findTransactionById(id).subscribe({
       next: res => {
         this.loader.hide();
-        this.accountInfo = res;
+        this.transactionInfo = res as ITransactionDetail;
       },
       error: err => {
         this.loader.hide();
