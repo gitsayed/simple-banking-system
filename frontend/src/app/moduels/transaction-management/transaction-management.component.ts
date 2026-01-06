@@ -122,9 +122,9 @@ export class TransactionManagementComponent implements OnInit {
 
   openFundTransferDialog() {
     const dialogRef = this.dialog.open(TransferFormDialogComponent, {
-      width: '60%',
+      width: '65%',
       disableClose: true,
-      data: { action: "add" }
+      data: { }
     });
 
     dialogRef.afterClosed().subscribe(result => {
