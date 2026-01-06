@@ -34,7 +34,7 @@ export class DepositFormDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<DepositFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
+    this.accountInfo == null;
   }
 
   ngOnInit(): void {
@@ -84,9 +84,7 @@ export class DepositFormDialogComponent implements OnInit {
     this.accountService.fetchAccountList(searchMap).subscribe({
       next: res => {
         this.loader.hide();
-        if (res) {
-          this.accountList = res;
-        }
+        this.accountList = res;
       },
       error: err => {
         this.loader.hide();
@@ -107,7 +105,12 @@ export class DepositFormDialogComponent implements OnInit {
   submit(): void {
 
     if (this.depositForm.valid) {
-
+      let dailyTrxLimit = Number(this.depositForm.value.toAccount.dailyTransactionLimit);
+      let trxAmount = Number(this.depositForm.value.transactionAmount);
+      if (trxAmount > dailyTrxLimit) {
+        this.toast.error(`Transaction Amount ${trxAmount} is larger than Daily Transaction Limit: ${dailyTrxLimit}`);
+        return;
+      }
       let payload: ISubmitTransaction = {
         transactionType: this.depositForm.value.transactionType,
         toAccountNumber: this.depositForm.value.toAccount.accountNumber,

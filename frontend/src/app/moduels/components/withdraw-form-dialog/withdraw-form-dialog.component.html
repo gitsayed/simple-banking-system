@@ -7,14 +7,25 @@
 </h1>
 
 <!-- Content -->
-<div >
+<div>
     <mat-dialog-content class="form-container">
 
         <form [formGroup]="withdrawForm">
-            <mat-form-field appearance="outline">
+
+            <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Account Number</mat-label>
-                <input matInput formControlName="fromAccountNumber" (keyup)="onKeyup($event)">
-                <mat-error *ngIf="withdrawForm.get('fromAccountNumber')?.hasError('required')">
+
+                <input type="text" matInput formControlName="fromAccount" (keyup)="onKeyup($event)"
+                    [matAutocomplete]="auto">
+
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAccountSelected($event)"
+                    [displayWith]="displayAccount">
+                    <mat-option *ngFor="let option of accountList" [value]="option">
+                        {{ option.accountNumber }}
+                    </mat-option>
+                </mat-autocomplete>
+
+                <mat-error *ngIf="withdrawForm.get('fromAccount')?.hasError('required')">
                     Account Number is required
                 </mat-error>
             </mat-form-field>
@@ -39,12 +50,28 @@
 
     </mat-dialog-content>
 
+    <mat-dialog-content class="detail-container" *ngIf="accountInfo">
+        <div class="label">Withdrawal Account Information</div>
+        <br />
+        <div class="detail-row odd">
+            <div class="label">Account Number</div>
+            <div class="value">{{ accountInfo.accountNumber }}</div>
+        </div>
+        <div class="detail-row even">
+            <div class="label">Account Balance</div>
+            <div class="value">{{ accountInfo.balance | number:'2.2'}}</div>
+        </div>
+        <div class="detail-row odd">
+            <div class="label"> Daily Transaction Limit</div>
+            <div class="value">{{ accountInfo.dailyTransactionLimit | number:'2.2'}}</div>
+        </div>
+    </mat-dialog-content>
+
     <!-- Footer -->
     <mat-dialog-actions align="end">
         <button mat-button (click)="close()">Cancel</button>
-        <button mat-flat-button color="primary" (click)="confirm()" [disabled]="withdrawForm.invalid">
+        <button mat-flat-button color="primary" (click)="confirm()" [disabled]="chechValidation">
             Submit
         </button>
     </mat-dialog-actions>
 </div>
-

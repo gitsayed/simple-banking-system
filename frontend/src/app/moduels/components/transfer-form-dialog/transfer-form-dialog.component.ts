@@ -15,12 +15,16 @@ import { ConfirmDialogService } from '../../../_services/confirm.service';
   templateUrl: './transfer-form-dialog.component.html',
   styleUrl: './transfer-form-dialog.component.scss'
 })
-export class TransferFormDialogComponent implements OnInit{
+export class TransferFormDialogComponent implements OnInit {
 
   transferForm!: FormGroup;
-  searchSubject = new Subject<string>();
+  fromSubject = new Subject<string>();
+  toSubject = new Subject<string>();
 
-  accountInfo: IAccount | null = {} as IAccount;
+  fromAccountInfo: IAccount | null = null;
+  toAccountInfo: IAccount | null = null;
+  fromAccountList: IAccount[] | null = null;
+  toAccountList: IAccount[] | null = null;
 
 
   constructor(
@@ -37,37 +41,50 @@ export class TransferFormDialogComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.searchSubject
+    this.initTransferForm();
+    this.fromSubject
       .pipe(
         debounceTime(3000),
         distinctUntilChanged()
       )
       .subscribe(searchName => {
-        this.getAccountByNumber(searchName);
+        this.fetchFromAccountListByNumber(searchName);
       });
-    this.initTransferForm();
+
+    this.toSubject
+      .pipe(
+        debounceTime(3000),
+        distinctUntilChanged()
+      )
+      .subscribe(searchName => {
+        this.fetchToAccountListByNumber(searchName);
+      });
+
+
 
   }
 
   initTransferForm() {
     this.transferForm = this.fb.group({
-      fromAccountNumber: ['', Validators.required],
-      toAccountNumber: ['', Validators.required],
+      fromAccount: ['', Validators.required],
+      toAccount: ['', Validators.required],
       transactionType: ["ACCOUNT_TRANSFER", Validators.required],
       transactionAmount: ['', Validators.required],
       remarks: [''],
     });
   }
 
-
-
-  getAccountByNumber(acNo: string) {
+  fetchFromAccountListByNumber(acNo: string) {
     this.loader.show();
-    this.accountService.findAccountByNumber(acNo).subscribe({
+    let searchMap = new Map();
+    searchMap.set("accountNumber", acNo);
+    this.accountService.fetchAccountList(searchMap).subscribe({
       next: res => {
         this.loader.hide();
-        this.accountInfo = res;
-
+        this.fromAccountList = res;
+        if (this.toAccountInfo && this.fromAccountList && this.fromAccountList.length > 0) {
+          this.fromAccountList = this.fromAccountList.filter((item: any) => item.accountNumber != this.toAccountInfo?.accountNumber);
+        }
       },
       error: err => {
         this.loader.hide();
@@ -75,6 +92,30 @@ export class TransferFormDialogComponent implements OnInit{
       }
     })
   }
+
+
+  fetchToAccountListByNumber(acNo: string) {
+    this.loader.show();
+    let searchMap = new Map();
+    searchMap.set("accountNumber", acNo);
+    this.accountService.fetchAccountList(searchMap).subscribe({
+      next: res => {
+        this.loader.hide();
+        this.toAccountList = res;
+
+        if (this.fromAccountInfo && this.toAccountList && this.toAccountList.length > 0) {
+          this.toAccountList = this.toAccountList.filter((item: any) => item.accountNumber != this.fromAccountInfo?.accountNumber);
+        }
+
+      },
+      error: err => {
+        this.loader.hide();
+        this.toast.error(err.error.message);
+      }
+    });
+  }
+
+
 
   confirm() {
     this.confirmService.confirm('Are you sure you want to proceed with FUND TRANSFER?')
@@ -88,7 +129,29 @@ export class TransferFormDialogComponent implements OnInit{
   submit(): void {
 
     if (this.transferForm.valid) {
-      let payload = this.transferForm.value as ISubmitTransaction;
+
+      let balance = Number(this.transferForm.value.fromAccount.balance);
+      let dailyTrxLimit = Number(this.transferForm.value.fromAccount.dailyTransactionLimit);
+      let trxAmount = Number(this.transferForm.value.transactionAmount);
+
+      if (trxAmount > balance) {
+        this.toast.error(`From Account Insufficient Balanne.`);
+        return;
+      }
+
+      if (trxAmount > dailyTrxLimit) {
+        this.toast.error(`Transaction Amount ${trxAmount} is larger than Daily Transaction Limit: ${dailyTrxLimit}`);
+        return;
+      }
+
+      let payload: ISubmitTransaction = {
+        transactionType: this.transferForm.value.transactionType,
+        fromAccountNumber: this.transferForm.value.fromAccount.accountNumber,
+        toAccountNumber: this.transferForm.value.toAccount.accountNumber,
+        transactionAmount: this.transferForm.value.transactionAmount,
+        remarks: this.transferForm.value.remarks
+      }
+
       this.loader.show();
       this.transactionService.submitTransaction(payload).subscribe({
         next: res => {
@@ -101,20 +164,55 @@ export class TransferFormDialogComponent implements OnInit{
           this.toast.error(err.error.message);
         }
       });
+    } else {
+      this.toast.error("Form invalid");
     }
 
 
   }
 
 
-  onKeyup(event: any) {
+  fromKeyup(event: any) {
     let searchName = event.target.value;
     searchName = searchName?.trim();
-    this.searchSubject.next(searchName);
+    this.fromSubject.next(searchName);
   }
 
+  toKeyup(event: any) {
+    let searchName = event.target.value;
+    searchName = searchName?.trim();
+    this.toSubject.next(searchName);
+  }
 
+  displayFromAccount(account: any): string {
+    return account ? account.accountNumber : '';
+  }
 
+    displayToAccount(account: any): string {
+    return account ? account.accountNumber : '';
+  }
+
+  onFromAccountSelected(event: any): void {
+    this.fromAccountInfo = event.option.value;
+  }
+
+  onToAccountSelected(event: any): void {
+    this.toAccountInfo = event.option.value;
+  }
+
+  get chechValidation(): boolean {
+
+    if (this.fromAccountInfo == null) {
+      return true;
+    }
+
+    if (this.toAccountInfo == null) {
+      return true;
+    }
+
+    return this.transferForm.invalid;
+
+  }
 
   close(): void {
     this.dialogRef.close();

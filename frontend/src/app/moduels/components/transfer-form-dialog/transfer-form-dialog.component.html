@@ -12,22 +12,45 @@
 
         <form [formGroup]="transferForm">
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="full-width">
                 <mat-label>From Account Number</mat-label>
-                <input matInput formControlName="fromAccountNumber" (keyup)="onKeyup($event)">
-                <mat-error *ngIf="transferForm.get('fromAccountNumber')?.hasError('required')">
+
+                <input type="text" matInput formControlName="fromAccount" (keyup)="fromKeyup($event)"
+                    [matAutocomplete]="auto">
+
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onFromAccountSelected($event)"
+                    [displayWith]="displayFromAccount">
+                    <mat-option *ngFor="let option of fromAccountList" [value]="option">
+                        {{ option.accountNumber }}
+                    </mat-option>
+                </mat-autocomplete>
+
+                <mat-error *ngIf="transferForm.get('fromAccount')?.hasError('required')">
                     From Account Number is required
                 </mat-error>
             </mat-form-field>
 
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="full-width">
                 <mat-label>To Account Number</mat-label>
-                <input matInput formControlName="toAccountNumber" (keyup)="onKeyup($event)">
-                <mat-error *ngIf="transferForm.get('toAccountNumber')?.hasError('required')">
-                    To Account Number is required
+
+                <input type="text" matInput formControlName="toAccount" (keyup)="toKeyup($event)"
+                    [matAutocomplete]="auto">
+
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onToAccountSelected($event)"
+                    [displayWith]="displayToAccount">
+                    <mat-option *ngFor="let option of toAccountList" [value]="option">
+                        {{ option.accountNumber }}
+                    </mat-option>
+                </mat-autocomplete>
+
+                <mat-error *ngIf="transferForm.get('toAccount')?.hasError('required')">
+                    From Account Number is required
                 </mat-error>
             </mat-form-field>
+
+
+
 
             <mat-form-field appearance="outline">
                 <mat-label>Transaction Amount</mat-label>
@@ -49,10 +72,46 @@
 
     </mat-dialog-content>
 
+    <mat-dialog-content class="detail-container" *ngIf="fromAccountInfo">
+        <div class="label">From Account Information</div>
+        <br />
+        <div class="detail-row odd">
+            <div class="label">Account Number</div>
+            <div class="value">{{ fromAccountInfo.accountNumber }}</div>
+        </div>
+        <div class="detail-row even">
+            <div class="label">Account Balance</div>
+            <div class="value">{{ fromAccountInfo.balance | number:'2.2'}}</div>
+        </div>
+        <div class="detail-row odd">
+            <div class="label"> Daily Transaction Limit</div>
+            <div class="value">{{ fromAccountInfo.dailyTransactionLimit | number:'2.2'}}</div>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-content class="detail-container" *ngIf="toAccountInfo">
+        <div class="label">To Account Information</div>
+        <br />
+        <div class="detail-row odd">
+            <div class="label">Account Number</div>
+            <div class="value">{{ toAccountInfo.accountNumber }}</div>
+        </div>
+        <div class="detail-row even">
+            <div class="label">Account Balance</div>
+            <div class="value">{{ toAccountInfo.balance | number:'2.2'}}</div>
+        </div>
+        <div class="detail-row odd">
+            <div class="label"> Daily Transaction Limit</div>
+            <div class="value">{{ toAccountInfo.dailyTransactionLimit | number:'2.2'}}</div>
+        </div>
+    </mat-dialog-content>
+
+
+
     <!-- Footer -->
     <mat-dialog-actions align="end">
         <button mat-button (click)="close()">Cancel</button>
-        <button mat-flat-button color="primary" (click)="confirm()" [disabled]="transferForm.invalid">
+        <button mat-flat-button color="primary" (click)="confirm()" [disabled]="chechValidation">
             Submit
         </button>
     </mat-dialog-actions>

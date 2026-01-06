@@ -16,13 +16,13 @@ import { ConfirmDialogService } from '../../../_services/confirm.service';
   templateUrl: './withdraw-form-dialog.component.html',
   styleUrl: './withdraw-form-dialog.component.scss'
 })
-export class WithdrawFormDialogComponent implements OnInit{
+export class WithdrawFormDialogComponent implements OnInit {
 
   withdrawForm!: FormGroup;
   searchSubject = new Subject<string>();
 
-  accountInfo: IAccount | null = {} as IAccount;
-
+  accountInfo: IAccount | null = null;
+  accountList: IAccount[] | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -34,17 +34,18 @@ export class WithdrawFormDialogComponent implements OnInit{
     private dialogRef: MatDialogRef<WithdrawFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
+this.accountInfo == null;
   }
 
   ngOnInit(): void {
+    
     this.searchSubject
       .pipe(
-        debounceTime(3000),
+        debounceTime(2000),
         distinctUntilChanged()
       )
       .subscribe(searchName => {
-        this.getAccountByNumber(searchName);
+        this.fetchAccountListByNumber(searchName);
       });
     this.initWithdrawForm();
 
@@ -52,7 +53,7 @@ export class WithdrawFormDialogComponent implements OnInit{
 
   initWithdrawForm() {
     this.withdrawForm = this.fb.group({
-      fromAccountNumber: ['', Validators.required],
+      fromAccount: ['', Validators.required],
       transactionType: ["WITHDRAWAL", Validators.required],
       transactionAmount: ['', Validators.required],
       remarks: [''],
@@ -75,6 +76,23 @@ export class WithdrawFormDialogComponent implements OnInit{
     })
   }
 
+
+  fetchAccountListByNumber(acNo: string) {
+    this.loader.show();
+    let searchMap = new Map();
+    searchMap.set("accountNumber", acNo);
+    this.accountService.fetchAccountList(searchMap).subscribe({
+      next: res => {
+        this.loader.hide();
+        this.accountList = res;
+      },
+      error: err => {
+        this.loader.hide();
+        this.toast.error(err.error.message);
+      }
+    })
+  }
+
   confirm() {
     this.confirmService.confirm('Are you sure you want to proceed with WITHDRAWAL?')
       .subscribe(confirmed => {
@@ -87,7 +105,29 @@ export class WithdrawFormDialogComponent implements OnInit{
   submit(): void {
 
     if (this.withdrawForm.valid) {
-      let payload = this.withdrawForm.value as ISubmitTransaction;
+
+
+      let balance = Number(this.withdrawForm.value.fromAccount.balance);
+      let dailyTrxLimit = Number(this.withdrawForm.value.fromAccount.dailyTransactionLimit);
+      let trxAmount = Number(this.withdrawForm.value.transactionAmount);
+
+      if (trxAmount > balance) {
+        this.toast.error(`Transaction Amount ${trxAmount} is larger than Current Balance: ${balance}`);
+        return;
+      }
+
+      if (trxAmount > dailyTrxLimit) {
+        this.toast.error(`Transaction Amount ${trxAmount} is larger than Daily Transaction Limit: ${dailyTrxLimit}`);
+        return;
+      }
+
+      let payload: ISubmitTransaction = {
+        transactionType: this.withdrawForm.value.transactionType,
+        fromAccountNumber: this.withdrawForm.value.fromAccount.accountNumber,
+        transactionAmount: this.withdrawForm.value.transactionAmount,
+        remarks: this.withdrawForm.value.remarks
+      }
+
       this.loader.show();
       this.transactionService.submitTransaction(payload).subscribe({
         next: res => {
@@ -107,12 +147,30 @@ export class WithdrawFormDialogComponent implements OnInit{
 
 
   onKeyup(event: any) {
+    this.accountInfo = null;
     let searchName = event.target.value;
     searchName = searchName?.trim();
     this.searchSubject.next(searchName);
   }
 
+  onAccountSelected(event: any): void {
+    this.accountInfo = event.option.value;
+  }
 
+
+  displayAccount(account: any): string {
+    return account ? account.accountNumber : '';
+  }
+
+  get chechValidation(): boolean {
+
+    if (this.accountInfo == null) {
+      return true;
+    }
+
+    return this.withdrawForm.invalid;
+
+  }
 
 
   close(): void {
