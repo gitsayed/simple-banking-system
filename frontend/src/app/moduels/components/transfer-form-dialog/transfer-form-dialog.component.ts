@@ -188,7 +188,7 @@ export class TransferFormDialogComponent implements OnInit {
     return account ? account.accountNumber : '';
   }
 
-    displayToAccount(account: any): string {
+  displayToAccount(account: any): string {
     return account ? account.accountNumber : '';
   }
 
