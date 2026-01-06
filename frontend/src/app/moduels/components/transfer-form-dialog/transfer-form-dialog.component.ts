@@ -135,7 +135,7 @@ export class TransferFormDialogComponent implements OnInit {
       let trxAmount = Number(this.transferForm.value.transactionAmount);
 
       if (trxAmount > balance) {
-        this.toast.error(`From Account Insufficient Balanne.`);
+        this.toast.error(`From Account Insufficient Balance.`);
         return;
       }
 
@@ -173,12 +173,14 @@ export class TransferFormDialogComponent implements OnInit {
 
 
   fromKeyup(event: any) {
+    this.fromAccountInfo = null;
     let searchName = event.target.value;
     searchName = searchName?.trim();
     this.fromSubject.next(searchName);
   }
 
   toKeyup(event: any) {
+    this.toAccountInfo = null;
     let searchName = event.target.value;
     searchName = searchName?.trim();
     this.toSubject.next(searchName);

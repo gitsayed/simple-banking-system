@@ -5,8 +5,45 @@
         <button mat-button (click)="openFundTransferDialog()" class="transfer-button-color">Fund Transfer</button>
     </mat-card-header>
     <mat-card-header>
+        <form [formGroup]="trxSearchForm" class="search-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Account Number</mat-label>
+                <input matInput formControlName="accountNumber" appNumberDot>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Transaction Type</mat-label>
+                <mat-select formControlName="transactionType">
+                    <mat-option value="DEPOSIT">DEPOSIT</mat-option>
+                    <mat-option value="WITHDRAWAL">WITHDRAWAL</mat-option>
+                    <mat-option value="ACCOUNT_TRANSFER">ACCOUNT TRANSFER</mat-option>
+                </mat-select>
+
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Reference Number</mat-label>
+                <input matInput formControlName="referenceNumber">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Start Date</mat-label>
+                <input matInput [matDatepicker]="fromPicker" formControlName="startDate">
+                <mat-datepicker #fromPicker />
+                <mat-datepicker-toggle [for]="fromPicker" matSuffix />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>End Date</mat-label>
+                <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+                <mat-datepicker #endPicker />
+                <mat-datepicker-toggle [for]="endPicker" matSuffix />
+            </mat-form-field>
+            <button mat-button class="transfer-button-color" style="margin-top: -1%;"
+                (click)="searchTrx()">Search</button>
+                <button mat-flat-button (click)="searchDownload()" class="deposit-button"
+                color="primary" style="margin-top: -1%;">Download PDF</button>
+            <button mat-button (click)="clearSearchForm()" class="widthraw-button-color" style="margin-top: -1%;">Clear</button>
+            
+        </form>
     </mat-card-header>
-    <mat-card-content style="margin-top: 2%;">
+    <mat-card-content >
         <mat-card class="table-card">
             <div class="table-container">
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">

@@ -1,6 +1,6 @@
 
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule } from 'ngx-toastr';
+import {  NgModule } from '@angular/core';
+import {  ToastNoAnimationModule } from 'ngx-toastr';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -20,6 +20,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatTimepickerModule} from '@angular/material/timepicker';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+
 
 
 @NgModule({
@@ -46,7 +50,10 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatPaginatorModule,
     MatDialogModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatTimepickerModule,
+    MatDatepickerModule,
+    MatNativeDateModule
 
   ],
   exports: [
@@ -70,7 +77,13 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatDialogModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatTimepickerModule,
+    MatDatepickerModule,
+    MatNativeDateModule
 
+  ],
+  providers:[
+    provideNativeDateAdapter()
   ]
 })
 export class SharedModule { }

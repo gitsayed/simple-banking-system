@@ -48,3 +48,20 @@
    text-align: right;
    background-color: #ACF756
  }
+
+ .margin-right{
+  margin-right: 1%;
+ }
+
+ .search-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;           /* spacing between fields */
+  flex-wrap: nowrap;  /* force single line */
+  width: 100%;
+}
+
+.search-form mat-form-field {
+  min-width: 180px;
+  flex: 1 1 auto;
+}

@@ -1,100 +1,101 @@
 <h1 mat-dialog-title class="dialog-title">
-  Fund Transfer to Accounts
-  <button mat-icon-button class="close-btn" (click)="close()">
-    <mat-icon>close</mat-icon>
-  </button>
+    Fund Transfer to Accounts
+    <button mat-icon-button class="close-btn" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
 </h1>
 
 
 
 <mat-dialog-content class="dialog-body">
 
-  <!-- FORM -->
-  <form [formGroup]="transferForm" class="form-container">
+    <!-- FORM -->
+    <form [formGroup]="transferForm" class="form-container">
 
-    <!-- From Account -->
-    <mat-form-field appearance="outline" style="margin-top: 2%;">
-      <mat-label>From Account Number</mat-label>
-      <input matInput formControlName="fromAccount"
-             (keyup)="fromKeyup($event)"
-             [matAutocomplete]="autoFrom">
+        <!-- From Account -->
+        <mat-form-field appearance="outline" style="margin-top: 2%;">
+            <mat-label>From Account Number</mat-label>
+            <input matInput formControlName="fromAccount" (keyup)="fromKeyup($event)" [matAutocomplete]="autoFrom">
 
-      <mat-autocomplete #autoFrom="matAutocomplete"
-                        (optionSelected)="onFromAccountSelected($event)"
-                        [displayWith]="displayFromAccount">
-        <mat-option *ngFor="let option of fromAccountList" [value]="option">
-          {{ option.accountNumber }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+            <mat-autocomplete #autoFrom="matAutocomplete" (optionSelected)="onFromAccountSelected($event)"
+                [displayWith]="displayFromAccount">
+                <mat-option *ngFor="let option of fromAccountList" [value]="option">
+                    {{ option.accountNumber }}
+                </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="transferForm.get('fromAccount')?.hasError('required')">
+                From Account Number is required
+            </mat-error>
+        </mat-form-field>
 
-    <!-- To Account -->
-    <mat-form-field appearance="outline">
-      <mat-label>To Account Number</mat-label>
-      <input matInput formControlName="toAccount"
-             (keyup)="toKeyup($event)"
-             [matAutocomplete]="autoTo">
+        <!-- To Account -->
+        <mat-form-field appearance="outline">
+            <mat-label>To Account Number</mat-label>
+            <input matInput formControlName="toAccount" (keyup)="toKeyup($event)" [matAutocomplete]="autoTo">
 
-      <mat-autocomplete #autoTo="matAutocomplete"
-                        (optionSelected)="onToAccountSelected($event)"
-                        [displayWith]="displayToAccount">
-        <mat-option *ngFor="let option of toAccountList" [value]="option">
-          {{ option.accountNumber }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+            <mat-autocomplete #autoTo="matAutocomplete" (optionSelected)="onToAccountSelected($event)"
+                [displayWith]="displayToAccount">
+                <mat-option *ngFor="let option of toAccountList" [value]="option">
+                    {{ option.accountNumber }}
+                </mat-option>
+            </mat-autocomplete>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Transaction Amount</mat-label>
-      <input matInput formControlName="transactionAmount" appNumberDot>
-    </mat-form-field>
+            <mat-error *ngIf="transferForm.get('toAccount')?.hasError('required')">
+                To Account Number is required
+            </mat-error>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Remarks</mat-label>
-      <input matInput formControlName="remarks">
-    </mat-form-field>
-  </form>
+        <mat-form-field appearance="outline">
+            <mat-label>Transaction Amount</mat-label>
+            <input matInput formControlName="transactionAmount" appNumberDot>
 
-  <!-- ACCOUNT DETAILS -->
-  <div class="details-wrapper">
+            <mat-error *ngIf="transferForm.get('transactionAmount')?.hasError('required')">
+                Transaction Amount is required
+            </mat-error>
+        </mat-form-field>
 
-    <div class="detail-container" *ngIf="fromAccountInfo">
-      <div class="section-title">From Account Information</div>
-      <div class="detail-row odd">
-        <div class="label">Account Number</div>
-        <div class="value">{{ fromAccountInfo.accountNumber }}</div>
-      </div>
-      <div class="detail-row even">
-        <div class="label">Balance</div>
-        <div class="value">{{ fromAccountInfo.balance | number:'2.2' }}</div>
-      </div>
+        <mat-form-field appearance="outline">
+            <mat-label>Remarks</mat-label>
+            <input matInput formControlName="remarks">
+        </mat-form-field>
+    </form>
+
+    <!-- ACCOUNT DETAILS -->
+    <div class="details-wrapper">
+
+        <div class="detail-container" *ngIf="fromAccountInfo">
+            <div class="section-title">From Account Information</div>
+            <div class="detail-row odd">
+                <div class="label">Account Number</div>
+                <div class="value">{{ fromAccountInfo.accountNumber }}</div>
+            </div>
+            <div class="detail-row even">
+                <div class="label">Balance</div>
+                <div class="value">{{ fromAccountInfo.balance | number:'2.2' }}</div>
+            </div>
+        </div>
+
+        <div class="detail-container" *ngIf="toAccountInfo">
+            <div class="section-title">To Account Information</div>
+            <div class="detail-row odd">
+                <div class="label">Account Number</div>
+                <div class="value">{{ toAccountInfo.accountNumber }}</div>
+            </div>
+            <div class="detail-row even">
+                <div class="label">Balance</div>
+                <div class="value">{{ toAccountInfo.balance | number:'2.2' }}</div>
+            </div>
+        </div>
+
     </div>
-
-    <div class="detail-container" *ngIf="toAccountInfo">
-      <div class="section-title">To Account Information</div>
-      <div class="detail-row odd">
-        <div class="label">Account Number</div>
-        <div class="value">{{ toAccountInfo.accountNumber }}</div>
-      </div>
-      <div class="detail-row even">
-        <div class="label">Balance</div>
-        <div class="value">{{ toAccountInfo.balance | number:'2.2' }}</div>
-      </div>
-    </div>
-
-  </div>
 </mat-dialog-content>
 
 
 
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="close()">Cancel</button>
-  <button mat-flat-button color="primary"
-          (click)="confirm()"
-          [disabled]="chechValidation">
-    Submit
-  </button>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="confirm()" [disabled]="chechValidation">
+        Submit
+    </button>
 </mat-dialog-actions>
-
-

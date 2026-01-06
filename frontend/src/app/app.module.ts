@@ -37,8 +37,7 @@ import { TransactionViewDialogComponent } from './moduels/components/transaction
 import { ConfirmDialogComponent } from './moduels/components/confirm-dialog/confirm-dialog.component';
 import { WithdrawFormDialogComponent } from './moduels/components/withdraw-form-dialog/withdraw-form-dialog.component';
 import { TransferFormDialogComponent } from './moduels/components/transfer-form-dialog/transfer-form-dialog.component';
-
-
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -70,6 +69,7 @@ import { TransferFormDialogComponent } from './moduels/components/transfer-form-
     TransferFormDialogComponent
   ],
   imports: [
+    
     AppRoutingModule,
     SharedModule,
     BrowserModule,
@@ -86,7 +86,8 @@ import { TransferFormDialogComponent } from './moduels/components/transfer-form-
     provideHttpClient(withInterceptorsFromDi()),
     authInterceptorProviders,
     provideAnimations(),
-    provideToastr()
+    provideToastr(),
+    DatePipe
 
   ],
  
