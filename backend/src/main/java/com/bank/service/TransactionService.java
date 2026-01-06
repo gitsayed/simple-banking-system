@@ -13,6 +13,7 @@ import java.util.List;
 public interface TransactionService {
 
     Transaction doTransaction( TransactionRequestDto request);
-    Page<TransactionResponseDto> getPagedAccountStatement(String accountNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType, Pageable pageable);
-    List<TransactionResponseDto> getAccountStatementList(String accountNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType);
+    TransactionResponseDto getTransactionById( Long id);
+    Page<TransactionResponseDto> getPagedAccountStatement(String accountNumber, String referenceNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType, Pageable pageable);
+    List<TransactionResponseDto> getAccountStatementList(String accountNumber, String referenceNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType);
 }

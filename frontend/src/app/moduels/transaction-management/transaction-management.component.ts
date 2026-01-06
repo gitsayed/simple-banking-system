@@ -4,12 +4,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToasterService } from '../../_services/toaster.service';
 import { LoaderService } from '../../_loader/loader.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AccountViewDialogComponent } from '../components/account-view-dialog/account-view-dialog.component';
-import { AccountFormDialogComponent } from '../components/account-form-dialog/account-form-dialog.component';
 import { TransactionService } from '../../_services/transaction.service';
 import { DepositFormDialogComponent } from '../components/deposit-form-dialog/deposit-form-dialog.component';
 import { WithdrawFormDialogComponent } from '../components/withdraw-form-dialog/withdraw-form-dialog.component';
 import { TransferFormDialogComponent } from '../components/transfer-form-dialog/transfer-form-dialog.component';
+import { TransactionViewDialogComponent } from '../components/transaction-view-dialog/transaction-view-dialog.component';
 
 
 @Component({
@@ -20,7 +19,7 @@ import { TransferFormDialogComponent } from '../components/transfer-form-dialog/
 })
 export class TransactionManagementComponent implements OnInit {
 
-  displayedColumns = ["transactionId", "transactionDate", "referenceNumber", "transactionType", "debitAmount", "creditAmount", "runningBalance", "remarks", "action"];
+  displayedColumns = ["transactionId", "transactionDate", "referenceNumber", "transactionType", "fromAccountNumber", "toAccountNumber", "debitAmount", "creditAmount",  "remarks", "action"];
   dataSource = new MatTableDataSource<any>([]);
   totalElements = 0;
   totalPages = 0;
@@ -78,7 +77,7 @@ export class TransactionManagementComponent implements OnInit {
   }
 
   onRowClick(row: any) {
-    const dialogRef = this.dialog.open(AccountViewDialogComponent, {
+    const dialogRef = this.dialog.open(TransactionViewDialogComponent, {
       width: '60%',
       data: row
     });

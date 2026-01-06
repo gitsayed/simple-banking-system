@@ -59,15 +59,19 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
-
     @Override
-    public Page<TransactionResponseDto> getPagedAccountStatement(String accountNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType, Pageable pageable) {
-        return transactionRepository.getPagedAccountStatement( accountNumber,  startDate,  endDate, transactionType!=null? transactionType.toString(): null,   pageable);
+    public TransactionResponseDto getTransactionById(Long id) {
+        return transactionRepository.getAccountStatementById(id);
     }
 
     @Override
-    public List<TransactionResponseDto> getAccountStatementList(String accountNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType) {
-        return transactionRepository.getAccountStatementList( accountNumber,  startDate,  endDate, transactionType!=null? transactionType.toString(): null);
+    public Page<TransactionResponseDto> getPagedAccountStatement(String accountNumber, String referenceNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType, Pageable pageable) {
+        return transactionRepository.getPagedAccountStatement( accountNumber,referenceNumber,  startDate,  endDate, transactionType!=null? transactionType.toString(): null,   pageable);
+    }
+
+    @Override
+    public List<TransactionResponseDto> getAccountStatementList(String accountNumber, String referenceNumber, LocalDate startDate, LocalDate endDate, TransactionType transactionType) {
+        return transactionRepository.getAccountStatementList( accountNumber,referenceNumber,  startDate,  endDate, transactionType!=null? transactionType.toString(): null);
     }
 
     private Transaction doDeposit(TransactionRequestDto request) {

@@ -10,13 +10,19 @@ public interface TransactionResponseDto {
     String getReferenceNumber();
     TransactionType getTransactionType();
     String getRemarks();
-    String getAccountNumber();
-    Long getCustomerId();
-    String getCustomerName();
-    String getMobileNo();
+    String getFromAccountNumber();
+    String getToAccountNumber();
+    Long getFromCustomerId();
+    String getFromCustomerName();
+    String getFromMobileNo();
+    Long getToCustomerId();
+    String getToCustomerName();
+    String getToMobileNo();
+
     Double getDebitAmount();
     Double getCreditAmount();
-    Double getRunningBalance();
+    Double getFromAcRunningBalance();
+    Double getToAcRunningBalance();
 
 
 

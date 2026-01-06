@@ -1,0 +1,66 @@
+.detail-container {
+  max-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow-y: auto;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  padding: 10px 16px;
+  align-items: center;
+}
+
+.detail-row.odd {
+  background-color: #fafafa;
+}
+
+.detail-row.even {
+  background-color: #ffffff;
+}
+
+.label {
+  font-weight: 600;
+  color: #555;
+}
+
+.value {
+  color: #212121;
+  word-break: break-word;
+}
+
+.detail-row {
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+
+.dialog-header {
+  position: relative;
+  padding-left: 7%;
+  padding-top: 3%;
+  height: 50px;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+
+.roles-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}

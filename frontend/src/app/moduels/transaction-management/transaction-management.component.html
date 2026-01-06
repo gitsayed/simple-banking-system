@@ -1,8 +1,10 @@
 <mat-card appearance="outlined">
     <mat-card-header>
-        <button mat-flat-button (click)="openDepositDialog()" color="primary">Deposit</button>
+        <button mat-flat-button (click)="openDepositDialog()" class="deposit-button" color="primary">Deposit</button>
         <button mat-button (click)="openWithdrawalDialog()" class="widthraw-button-color">Widthraw</button>
-        <button mat-button (click)="openFundTransferDialog()"  class="transfer-button-color">Transfer</button>
+        <button mat-button (click)="openFundTransferDialog()" class="transfer-button-color">Fund Transfer</button>
+    </mat-card-header>
+    <mat-card-header>
     </mat-card-header>
     <mat-card-content style="margin-top: 2%;">
         <mat-card class="table-card">
@@ -28,25 +30,29 @@
                         <th mat-header-cell *matHeaderCellDef>Transaction Type</th>
                         <td mat-cell *matCellDef="let row">{{ row.transactionType }}</td>
                     </ng-container>
-
+                    <ng-container matColumnDef="fromAccountNumber">
+                        <th mat-header-cell *matHeaderCellDef>From Account Number</th>
+                        <td mat-cell *matCellDef="let row">{{ row.fromAccountNumber }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="toAccountNumber">
+                        <th mat-header-cell *matHeaderCellDef>To Account Number</th>
+                        <td mat-cell *matCellDef="let row">{{ row.toAccountNumber }}
+                        </td>
+                    </ng-container>
                     <ng-container matColumnDef="debitAmount">
                         <th mat-header-cell *matHeaderCellDef class="debit">Debit Amount</th>
                         <td mat-cell *matCellDef="let row" class="debit">{{ row.debitAmount |
                             number:'0.2'}}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="creditAmount" >
-                        <th mat-header-cell *matHeaderCellDef class="credit" >Credit Amount</th>
-                        <td mat-cell *matCellDef="let row" class="credit" >{{ row.creditAmount |
+                    <ng-container matColumnDef="creditAmount">
+                        <th mat-header-cell *matHeaderCellDef class="credit">Credit Amount</th>
+                        <td mat-cell *matCellDef="let row" class="credit">{{ row.creditAmount |
                             number:'0.2'}}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="runningBalance">
-                        <th mat-header-cell *matHeaderCellDef class="balance">Runnning Balance</th>
-                        <td mat-cell *matCellDef="let row" class="balance">{{ row.runningBalance |
-                            number:'0.2'}}
-                        </td>
-                    </ng-container>
+
                     <ng-container matColumnDef="remarks">
                         <th mat-header-cell *matHeaderCellDef>Remarks</th>
                         <td mat-cell *matCellDef="let row">{{ row.remarks }}</td>
@@ -66,8 +72,7 @@
             </div>
 
             <mat-paginator [length]="totalElements" [pageSize]="size" [pageSizeOptions]="[ 5, 10, 20]"
-            showFirstLastButtons
-                (page)="onPageChange($event)">
+                showFirstLastButtons (page)="onPageChange($event)">
             </mat-paginator>
 
         </mat-card>
