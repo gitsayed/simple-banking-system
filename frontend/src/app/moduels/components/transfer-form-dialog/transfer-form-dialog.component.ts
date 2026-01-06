@@ -67,7 +67,6 @@ export class TransferFormDialogComponent implements OnInit{
       next: res => {
         this.loader.hide();
         this.accountInfo = res;
-        console.log(' this.accountInfo', this.accountInfo);
 
       },
       error: err => {

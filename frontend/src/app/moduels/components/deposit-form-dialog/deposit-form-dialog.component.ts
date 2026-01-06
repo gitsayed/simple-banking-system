@@ -16,13 +16,13 @@ import { ConfirmDialogService } from '../../../_services/confirm.service';
   templateUrl: './deposit-form-dialog.component.html',
   styleUrl: './deposit-form-dialog.component.scss'
 })
-export class DepositFormDialogComponent implements OnInit{
+export class DepositFormDialogComponent implements OnInit {
 
   depositForm!: FormGroup;
   searchSubject = new Subject<string>();
 
   accountInfo: IAccount | null = {} as IAccount;
-
+  accountList: IAccount[] | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -40,11 +40,11 @@ export class DepositFormDialogComponent implements OnInit{
   ngOnInit(): void {
     this.searchSubject
       .pipe(
-        debounceTime(3000),
+        debounceTime(2000),
         distinctUntilChanged()
       )
       .subscribe(searchName => {
-        this.getAccountByNumber(searchName);
+        this.fetchAccountListByNumber(searchName);
       });
     this.initDepositForm();
 
@@ -52,9 +52,9 @@ export class DepositFormDialogComponent implements OnInit{
 
   initDepositForm() {
     this.depositForm = this.fb.group({
-      toAccountNumber: ['', Validators.required],
+      toAccount: ['', Validators.required],
       transactionType: ["DEPOSIT", Validators.required],
-      transactionAmount: ['', Validators.required],
+      transactionAmount: [null, Validators.required],
       remarks: [''],
     });
   }
@@ -63,12 +63,30 @@ export class DepositFormDialogComponent implements OnInit{
 
   getAccountByNumber(acNo: string) {
     this.loader.show();
+
     this.accountService.findAccountByNumber(acNo).subscribe({
       next: res => {
         this.loader.hide();
         this.accountInfo = res;
-        console.log(' this.accountInfo', this.accountInfo);
 
+      },
+      error: err => {
+        this.loader.hide();
+        this.toast.error(err.error.message);
+      }
+    })
+  }
+
+  fetchAccountListByNumber(acNo: string) {
+    this.loader.show();
+    let searchMap = new Map();
+    searchMap.set("accountNumber", acNo);
+    this.accountService.fetchAccountList(searchMap).subscribe({
+      next: res => {
+        this.loader.hide();
+        if (res) {
+          this.accountList = res;
+        }
       },
       error: err => {
         this.loader.hide();
@@ -89,7 +107,14 @@ export class DepositFormDialogComponent implements OnInit{
   submit(): void {
 
     if (this.depositForm.valid) {
-      let payload = this.depositForm.value as ISubmitTransaction;
+
+      let payload: ISubmitTransaction = {
+        transactionType: this.depositForm.value.transactionType,
+        toAccountNumber: this.depositForm.value.toAccount.accountNumber,
+        transactionAmount: this.depositForm.value.transactionAmount,
+        remarks: this.depositForm.value.remarks
+      }
+
       this.loader.show();
       this.transactionService.submitTransaction(payload).subscribe({
         next: res => {
@@ -109,16 +134,36 @@ export class DepositFormDialogComponent implements OnInit{
 
 
   onKeyup(event: any) {
+    this.accountInfo = null;
     let searchName = event.target.value;
     searchName = searchName?.trim();
     this.searchSubject.next(searchName);
   }
 
+  onAccountSelected(event: any): void {
+    this.accountInfo = event.option.value;
 
+  }
+
+
+  displayAccount(account: any): string {
+    return account ? account.accountNumber : '';
+  }
 
 
   close(): void {
     this.dialogRef.close();
+  }
+
+
+  get chechValidation(): boolean {
+
+    if (this.accountInfo == null) {
+      return true;
+    }
+
+    return this.depositForm.invalid;
+
   }
 
 
