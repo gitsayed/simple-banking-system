@@ -10,7 +10,7 @@ parts are following:
 1) Backend
 2) Frontend
 
-### Features I have developed
+### Features developed
 
 ```
 1) Role based user management.
