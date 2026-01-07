@@ -74,7 +74,7 @@
     <!-- Footer -->
     <mat-dialog-actions align="end">
         <button mat-button (click)="close()">Cancel</button>
-        <button mat-flat-button color="primary" (click)="submit()" [disabled]="accountForm.invalid">
+        <button mat-flat-button color="primary" (click)="confirmSave()" [disabled]="accountForm.invalid">
             Save
         </button>
     </mat-dialog-actions>
@@ -143,7 +143,7 @@
     <!-- Footer -->
     <mat-dialog-actions align="end">
         <button mat-button (click)="close()">Cancel</button>
-        <button mat-flat-button color="primary" (click)="submitUpdate()" [disabled]="accountUpdateForm.invalid">
+        <button mat-flat-button color="primary" (click)="confirmUpdate()" [disabled]="accountUpdateForm.invalid">
             Save
         </button>
     </mat-dialog-actions>

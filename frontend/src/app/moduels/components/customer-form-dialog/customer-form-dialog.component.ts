@@ -7,6 +7,7 @@ import { LoaderService } from '../../../_loader/loader.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserFormDialogComponent } from '../user-form-dialog/user-form-dialog.component';
 import { CustomerService } from '../../../_services/customer.service';
+import { ConfirmDialogService } from '../../../_services/confirm.service';
 
 @Component({
   selector: 'app-customer-form-dialog',
@@ -26,6 +27,7 @@ export class CustomerFormDialogComponent {
     private customerService: CustomerService,
     private loader: LoaderService,
     private dialogRef: MatDialogRef<CustomerFormDialogComponent>,
+    private confirmService: ConfirmDialogService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data && data?.action) {
@@ -36,7 +38,7 @@ export class CustomerFormDialogComponent {
     }
   }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
 
     this.customerForm = this.fb.group({
       name: [this.customerInfo?.name, Validators.required],
@@ -44,9 +46,18 @@ export class CustomerFormDialogComponent {
       address: [this.customerInfo?.address, Validators.required],
       mobileNo: [this.customerInfo?.mobileNo, Validators.required],
       nid: [this.customerInfo?.nid, Validators.required],
-    
+
 
     });
+  }
+
+  confirm() {
+    this.confirmService.confirm('Are you sure you want to proceed with this operation?')
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.submit();
+        }
+      });
   }
 
   submit(): void {
@@ -65,7 +76,7 @@ export class CustomerFormDialogComponent {
           }
         });
       } else if (this.action == "update" && this.customerInfo?.id) {
-        this.customerService.updateCustomer( this.customerInfo.id, payload).subscribe({
+        this.customerService.updateCustomer(this.customerInfo.id, payload).subscribe({
           next: res => {
             this.loader.hide();
             this.toast.success("Customer has been updated successfully.");

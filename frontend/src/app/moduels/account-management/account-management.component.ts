@@ -9,6 +9,7 @@ import { AccountFormDialogComponent } from '../components/account-form-dialog/ac
 import { AccountService } from '../../_services/account.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { ConfirmDialogService } from '../../_services/confirm.service';
 
 @Component({
   selector: 'app-account-management',
@@ -33,6 +34,7 @@ export class AccountManagementComponent implements OnInit {
     private toast: ToasterService,
     private loader: LoaderService,
     private accountService: AccountService,
+    private confirmService: ConfirmDialogService,
     private dialog: MatDialog,
     private fb: FormBuilder,
     private datePipe: DatePipe
@@ -45,6 +47,8 @@ export class AccountManagementComponent implements OnInit {
     this.loadAccounts();
 
   }
+
+
 
   loadAccounts(): void {
     let paramMap: Map<string, any> = this.getParamMap();

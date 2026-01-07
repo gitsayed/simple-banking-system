@@ -8,6 +8,7 @@ import { UserFormDialogComponent } from '../user-form-dialog/user-form-dialog.co
 import { AccountService } from '../../../_services/account.service';
 import { CustomerService } from '../../../_services/customer.service';
 import { map, startWith } from 'rxjs';
+import { ConfirmDialogService } from '../../../_services/confirm.service';
 
 @Component({
   selector: 'app-account-form-dialog',
@@ -30,6 +31,7 @@ export class AccountFormDialogComponent {
     private toast: ToasterService,
     private customerService: CustomerService,
     private accountService: AccountService,
+    private confirmService: ConfirmDialogService,
     private loader: LoaderService,
     private dialogRef: MatDialogRef<AccountFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -54,6 +56,24 @@ export class AccountFormDialogComponent {
     }
 
 
+  }
+
+    confirmSave() {
+    this.confirmService.confirm('Are you sure you want to proceed with this operation?')
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.submit();
+        }
+      });
+  }
+
+  confirmUpdate() {
+    this.confirmService.confirm('Are you sure you want to proceed with this operation?')
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.submitUpdate();
+        }
+      });
   }
 
   initAccountForm() {

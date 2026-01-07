@@ -6,6 +6,7 @@ import { UserService } from '../../../_services/user.service';
 import { LoaderService } from '../../../_loader/loader.service';
 import { UserFormDialogComponent } from '../user-form-dialog/user-form-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmDialogService } from '../../../_services/confirm.service';
 
 @Component({
   selector: 'app-role-form-dialog',
@@ -25,7 +26,8 @@ export class RoleFormDialogComponent implements OnInit {
     private userService: UserService,
     private loader: LoaderService,
     private dialogRef: MatDialogRef<RoleFormDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private confirmService: ConfirmDialogService
   ) {
     if (data && data?.action) {
       this.action = data.action;
@@ -39,15 +41,19 @@ export class RoleFormDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     this.roleForm = this.fb.group({
       name: [this.roleInfo?.name, Validators.required],
-    
-
     });
   }
 
-
+  confirm() {
+    this.confirmService.confirm('Are you sure you want to proceed with this operation?')
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.submit();
+        }
+      });
+  }
 
 
 
