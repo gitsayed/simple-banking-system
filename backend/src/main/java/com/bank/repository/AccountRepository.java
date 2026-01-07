@@ -54,7 +54,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
             AND LOWER(ac.accountType) LIKE LOWER(CONCAT('%' , COALESCE(:accountType, ac.accountType) , '%'))
             AND LOWER(ac.accountNumber) LIKE LOWER(CONCAT('%' , COALESCE(:accountNumber, ac.accountNumber) , '%'))
             AND ac.dailyTransactionLimit <= COALESCE(:dailyTransactionLimit, ac.dailyTransactionLimit)
-            AND LOWER(ac.status) LIKE LOWER(CONCAT('%' , COALESCE(:status, ac.status) , '%'))
+            AND LOWER(ac.status) = LOWER( COALESCE(:status, ac.status) )
             """;
 
     String COMMON_SQL = """
