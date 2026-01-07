@@ -97,6 +97,20 @@ export class UsersComponent implements OnInit {
     });
   }
 
+   openUserUpdateDialog(row:any) {
+    const dialogRef = this.dialog.open(UserFormDialogComponent, {
+      width: '60%',
+      disableClose: true,
+      data: {action:"update", userInfo: row}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.page = 0;
+        this.loadUsers();
+      }
+    });
+  }
 
   openUserAddDialog() {
     const dialogRef = this.dialog.open(UserFormDialogComponent, {

@@ -2,14 +2,17 @@ package com.bank.controller;
 
 
 import com.bank.dto.UserInfoDto;
+import com.bank.dto.UserUpdateRequestDto;
 import com.bank.entity.AppUser;
 import com.bank.security.LoginService;
 import com.bank.service.UserService;
 import com.bank.utils.AcStatus;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +52,7 @@ public class UserController {
             @RequestParam(required = false) AcStatus status,
             Pageable pageable) {
         log.info("Fetching paged users...");
-        Page<AppUser> pagedUsers = userService.getPagedUsers(id, username, mobileNo, email, employeeId , status,  pageable);
+        Page<AppUser> pagedUsers = userService.getPagedUsers(id, username, mobileNo, email, employeeId, status, pageable);
         return ResponseEntity.ok(pagedUsers);
     }
 
@@ -61,10 +64,18 @@ public class UserController {
             @RequestParam(required = false) String mobileNo,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String employeeId,
-            @RequestParam(required = false) AcStatus status             ) {
+            @RequestParam(required = false) AcStatus status) {
         log.info("Fetching user list...");
-        List<AppUser> pagedUsers = userService.getUserList(id, username, mobileNo, email, employeeId , status);
+        List<AppUser> pagedUsers = userService.getUserList(id, username, mobileNo, email, employeeId, status);
         return ResponseEntity.ok(pagedUsers);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateUserById(@PathVariable Long id,
+                                               @RequestBody @Valid UserUpdateRequestDto request) {
+        log.info("Updating user by id: {}", id);
+        userService.updateUserById(id, request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

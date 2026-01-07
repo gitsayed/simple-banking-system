@@ -6,6 +6,7 @@ import { AuthService } from '../../../_services/auth.service';
 import { LoaderService } from '../../../_loader/loader.service';
 import { UserInfo } from '../../model/common-model';
 import { UserService } from '../../../_services/user.service';
+import { ConfirmDialogService } from '../../../_services/confirm.service';
 
 @Component({
   selector: 'app-user-form-dialog',
@@ -15,25 +16,26 @@ import { UserService } from '../../../_services/user.service';
 })
 export class UserFormDialogComponent implements OnInit {
 
+  userUpdateForm!: FormGroup;
   userForm!: FormGroup;
   action = "add";
   userInfo: UserInfo | null = null;
   roleList: any[] = [];
+  roleIds: any[] | null = null;
   constructor(
     private fb: FormBuilder,
     private toast: ToasterService,
     private authService: AuthService,
     private userService: UserService,
     private loader: LoaderService,
+    private confirmService: ConfirmDialogService,
     private dialogRef: MatDialogRef<UserFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    if (data && data?.action) {
-      this.action = data.action;
+    if (this.data && this.data?.action) {
+      this.action = this.data.action;
     }
-    if (data && data?.action) {
-      this.userInfo = data.userInfo;
-    }
+
 
 
   }
@@ -41,24 +43,77 @@ export class UserFormDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRoleList();
+    this.initUserForm();
+    if (this.data && this.data?.userInfo) {
+      this.getUserById(this.data?.userInfo?.id);
+    }
+  }
 
-    let roleIds: number[] = [];
+  confirm() {
+    this.confirmService.confirm('Are you sure you want to proceed with this operation?')
+      .subscribe(confirmed => {
+        if (confirmed) {
+          if (this.action == "add") {
+            this.submit();
+          } else if (this.action == "update") {
+            this.submitUpdate();
+          }
+        }
+      });
+  }
+
+  initUserForm() {
     if (this.userInfo?.roles) {
-      roleIds = this.userInfo.roles.map(item => item.id);
+      this.roleIds = this.userInfo.roles.map(item => item.id);
     }
 
     this.userForm = this.fb.group({
+      username: ['', Validators.required],
+      employeeId: [''],
+      password: ['', Validators.required],
+      mobileNo: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      status: [''],
+      dept: [''],
+      roleIds: ['']
+    });
+
+  }
+
+
+  getUserById(id: number) {
+    this.loader.show();
+    this.userService.findUserById(id).subscribe({
+      next: res => {
+        this.loader.hide();
+        this.userInfo = res;
+        this.initUpdateUserForm();
+      }
+    });
+  }
+
+
+
+  initUpdateUserForm() {
+    if (this.userInfo?.roles) {
+      this.roleIds = this.userInfo.roles.map(item => item.id);
+    }
+
+    this.userUpdateForm = this.fb.group({
       username: [this.userInfo?.username, Validators.required],
       employeeId: [this.userInfo?.employeeId],
-      password: ['', Validators.required],
+      password: ['',],
       mobileNo: [this.userInfo?.mobileNo, [Validators.required]],
       email: [this.userInfo?.email, [Validators.required, Validators.email]],
       status: [this.userInfo?.status],
       dept: [this.userInfo?.dept],
-      roleIds: [roleIds]
-
+      roleIds: [this.roleIds]
     });
+
   }
+
+
+
 
   getRoleList(name?: string): void {
     let paramMap = new Map<string, any>();
@@ -83,8 +138,13 @@ export class UserFormDialogComponent implements OnInit {
   }
 
   onRoleSelect(selected: any[]) {
-    this.userForm.controls['roleIds'].setValue(selected);
 
+    if (this.action === "add") {
+      this.userForm.controls['roleIds'].setValue(selected);
+    }
+    if (this.action === "update") {
+      this.userUpdateForm.controls['roleIds'].setValue(selected);
+    }
   }
 
   submit(): void {
@@ -106,6 +166,29 @@ export class UserFormDialogComponent implements OnInit {
 
     }
   }
+
+
+  submitUpdate(): void {
+    if (this.userUpdateForm.valid) {
+      let payload = this.userUpdateForm.value;
+      if (this.action == "update" && this.userInfo) {
+        this.userService.updateUserById(this.userInfo.id, payload).subscribe({
+          next: res => {
+            this.loader.hide();
+            this.toast.success("User has been updated successfully.");
+            this.dialogRef.close("ok");
+          },
+          error: err => {
+            this.loader.hide();
+            this.toast.error(err.error.message);
+          }
+        });
+      }
+
+    }
+  }
+
+
 
   close(): void {
     this.dialogRef.close();

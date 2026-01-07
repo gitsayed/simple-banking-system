@@ -37,6 +37,11 @@ export class UserService extends BaseService {
     let url = `${USER_API}/${id}`;
     return this.http.get(url, httpOptions);
   }
+  
+  updateUserById(id: number, payload:any): Observable<any> {
+    let url = `${USER_API}/${id}`;
+    return this.http.put(url, payload, httpOptions);
+  }
 
   fetchRoleList(searchMap: Map<string, any>): Observable<any> {
     let param = this.mapToQueryString(searchMap);

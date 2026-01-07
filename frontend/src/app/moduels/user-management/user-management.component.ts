@@ -18,22 +18,16 @@ import { LoaderService } from '../../_loader/loader.service';
 })
 export class UserManagementComponent implements OnInit {
 
-   pageIndicatorControl = new FormControl('user');
+  pageIndicatorControl = new FormControl('user');
 
-  test :any = "";
- 
+
   constructor(
-    private router: Router,
-    private toast: ToasterService,
-    private authService: AuthService,
-    private formBuilder: FormBuilder,
-    private loaderService: LoaderService,
-    private tokenStorage: TokenStorageService) { }
+  ) { }
 
 
   ngOnInit(): void {
 
-  
+
   }
 
 

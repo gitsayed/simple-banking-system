@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -7,11 +7,12 @@ import { FormControl } from '@angular/forms';
   templateUrl: './multi-select.component.html',
   styleUrl: './multi-select.component.scss'
 })
-export class MultiSelectComponent {
+export class MultiSelectComponent implements OnChanges, OnInit {
 
 
-  @Input() roles: any[] = [];    
-  @Input() label = 'Seelct';
+  @Input() selectedList: any[] | null = null;
+  @Input() dataList: any[] = [];
+  @Input() label = 'Select';
 
   @Output() searchChange = new EventEmitter<string>();
   @Output() selectionChange = new EventEmitter<any[]>();
@@ -19,16 +20,30 @@ export class MultiSelectComponent {
   searchCtrl = new FormControl('');
   selectCtrl = new FormControl([]);
 
- 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedList']?.currentValue) {
+      this.selectCtrl.setValue(changes['selectedList'].currentValue);
+      this.onSelectionChange();
+    }
+
+  }
+
+  ngOnInit(): void {
+
+  }
+
+
+
+
   onKeyup(): void {
-    this.selectCtrl.setValue([]);        
-    this.selectionChange.emit([]);         
+    this.selectCtrl.setValue([]);
+    this.selectionChange.emit([]);
     this.searchChange.emit(this.searchCtrl.value || '');
   }
 
 
   onSelectionChange(): void {
-    this.selectionChange.emit(this.selectCtrl.value? this.selectCtrl.value: []);
+    this.selectionChange.emit(this.selectCtrl.value ? this.selectCtrl.value : []);
   }
 
 }
