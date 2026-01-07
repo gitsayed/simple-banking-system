@@ -8,6 +8,7 @@ import { UserViewComponent } from '../components/user-view/user-view.component';
 import { LoaderService } from '../../_loader/loader.service';
 import { ToasterService } from '../../_services/toaster.service';
 import { UserFormDialogComponent } from '../components/user-form-dialog/user-form-dialog.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -23,6 +24,7 @@ export class UsersComponent implements OnInit {
   totalPages = 0;
   page = 0;
   size = 10;
+  searchForm!: FormGroup;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -30,22 +32,20 @@ export class UsersComponent implements OnInit {
     private toast: ToasterService,
     private loader: LoaderService,
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ) {
 
   }
 
   ngOnInit(): void {
-
+    this.initSearchForm();
     this.loadUsers();
   }
 
-  loadUsers(paramMap?: Map<string, any>): void {
-    if (!paramMap) {
-      paramMap = new Map<string, any>();
-      paramMap.set("page", this.page);
-      paramMap.set("size", this.size);
-    }
+  loadUsers(): void {
+    let paramMap: Map<string, any> = this.getParamMap();
+ 
     this.loader.show();
     this.userService.fetchPagedUser(paramMap).subscribe({
       next: res => {
@@ -78,6 +78,7 @@ export class UsersComponent implements OnInit {
     this.loader.show();
     this.userService.findUserById(row.id).subscribe({
       next: res => {
+        this.loader.hide();
         if (res) {
           const dialogRef = this.dialog.open(UserViewComponent, {
             width: '50%',
@@ -110,6 +111,35 @@ export class UsersComponent implements OnInit {
         this.loadUsers();
       }
     });
+  }
+
+
+  initSearchForm() {
+    this.searchForm = this.fb.group({
+      id: [''],
+      username: [''],
+      email: [''],
+      mobileNo: [''],
+      status: [''],
+      dept: ['']
+    });
+  }
+
+  clearSearchForm() {
+    this.searchForm.reset();
+    this.searchForm.updateValueAndValidity();
+    this.loadUsers();
+  }
+
+  getParamMap(): Map<string, any> {
+    let searchObject = this.searchForm.value ? this.searchForm.value : {};
+    let paramMap = new Map<string, any>(
+      Object.entries(searchObject).filter(([_, value]) => value !== null && value !== undefined && value !== '')
+    );
+
+    paramMap.set("page", this.page);
+    paramMap.set("size", this.size);
+    return paramMap;
   }
 
 

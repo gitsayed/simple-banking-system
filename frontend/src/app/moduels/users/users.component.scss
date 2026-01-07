@@ -30,3 +30,29 @@
 .selected-row {
   background-color: #e3f2fd !important;
 }
+
+ .widthraw-button-color {
+   background-color: #F65421;
+   color: white;
+   font-size: 15pt;
+ }
+
+
+ .transfer-button-color {
+   background-color: #93be62;
+   color: white;
+   font-size: 15pt;
+ }
+
+  .search-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;        
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.search-form mat-form-field {
+  min-width: 180px;
+  flex: 1 1 auto;
+}
