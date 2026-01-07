@@ -5,6 +5,12 @@
 
     <mat-card-header>
         <form [formGroup]="acSearchForm" class="search-form">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Account ID</mat-label>
+                <input matInput formControlName="id">
+            </mat-form-field>
+            
             <mat-form-field appearance="outline">
                 <mat-label>Account Number</mat-label>
                 <input matInput formControlName="accountNumber">
@@ -27,11 +33,11 @@
                 </mat-select>
 
             </mat-form-field>
-                <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline">
                 <mat-label>Customer ID</mat-label>
                 <input matInput formControlName="customerId">
             </mat-form-field>
-                <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline">
                 <mat-label>Customer Name</mat-label>
                 <input matInput formControlName="customerName">
             </mat-form-field>

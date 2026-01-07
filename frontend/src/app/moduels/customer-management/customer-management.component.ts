@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CustomerFormDialogComponent } from '../components/customer-form-dialog/customer-form-dialog.component';
 import { CustomerViewDialogComponent } from '../components/customer-view-dialog/customer-view-dialog.component';
 import { CustomerService } from '../../_services/customer.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-management',
@@ -16,12 +17,14 @@ import { CustomerService } from '../../_services/customer.service';
 })
 export class CustomerManagementComponent implements OnInit {
 
-  displayedColumns = ["id", "name", "mobileNo", "address", "action"];
+  displayedColumns = ["id", "name", "mobileNo", "address", "nid", "action"];
   dataSource = new MatTableDataSource<any>([]);
   totalElements = 0;
   totalPages = 0;
   page = 0;
   size = 10;
+
+  searchForm!: FormGroup;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -29,22 +32,19 @@ export class CustomerManagementComponent implements OnInit {
     private toast: ToasterService,
     private loader: LoaderService,
     private customerService: CustomerService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ) {
 
   }
 
   ngOnInit(): void {
-
+    this.initSearchForm();
     this.loadCustomers();
   }
 
-  loadCustomers(paramMap?: Map<string, any>): void {
-    if (!paramMap) {
-      paramMap = new Map<string, any>();
-      paramMap.set("page", this.page);
-      paramMap.set("size", this.size);
-    }
+  loadCustomers(): void {
+    let paramMap: Map<string, any> = this.getParamMap();
     this.loader.show();
     this.customerService.fetchPagedCustomer(paramMap).subscribe({
       next: res => {
@@ -103,8 +103,8 @@ export class CustomerManagementComponent implements OnInit {
 
 
 
-  openCustomerUpdateDialog(row:any) {
-    
+  openCustomerUpdateDialog(row: any) {
+
     const dialogRef = this.dialog.open(CustomerFormDialogComponent, {
       width: '60%',
       disableClose: true,
@@ -119,7 +119,31 @@ export class CustomerManagementComponent implements OnInit {
     });
   }
 
+  initSearchForm() {
+    this.searchForm = this.fb.group({
+      id: [''],
+      name: [''],
+      mobileNo: [''],
+      address: [''],
+      nid: ['']
+    });
+  }
 
+  clearSearchForm() {
+    this.searchForm.reset();
+    this.searchForm.updateValueAndValidity();
+    this.loadCustomers();
+  }
 
+  getParamMap(): Map<string, any> {
+    let searchObject = this.searchForm.value ? this.searchForm.value : {};
+    let paramMap = new Map<string, any>(
+      Object.entries(searchObject).filter(([_, value]) => value !== null && value !== undefined && value !== '')
+    );
+
+    paramMap.set("page", this.page);
+    paramMap.set("size", this.size);
+    return paramMap;
+  }
 
 }
