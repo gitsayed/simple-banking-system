@@ -8,7 +8,7 @@
         <form [formGroup]="trxSearchForm" class="search-form">
             <mat-form-field appearance="outline">
                 <mat-label>Account Number</mat-label>
-                <input matInput formControlName="accountNumber" appNumberDot>
+                <input matInput formControlName="accountNumber">
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Transaction Type</mat-label>
@@ -36,7 +36,7 @@
                 <mat-datepicker-toggle [for]="endPicker" matSuffix />
             </mat-form-field>
             <button mat-button class="transfer-button-color" style="margin-top: -1%;"
-                (click)="searchTrx()">Search</button>
+                (click)="loadTransactions()">Search</button>
                 <button mat-flat-button (click)="searchDownload()" class="deposit-button"
                 color="primary" style="margin-top: -1%;">Download PDF</button>
             <button mat-button (click)="clearSearchForm()" class="widthraw-button-color" style="margin-top: -1%;">Clear</button>

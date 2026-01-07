@@ -47,30 +47,33 @@ export class TransactionManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.loadTransactions();
     this.initTrxSearchForm();
+    this.loadTransactions();
+
   }
 
-  searchTrx() {
+  getParamMap(): Map<string, any> {
     let searchObject = this.trxSearchForm.value;
 
-    let map = new Map<string, any>(
+    let paramMap = new Map<string, any>(
       Object.entries(searchObject).filter(([_, value]) => value !== null && value !== undefined && value !== '')
     );
-    let startDate = map.get("startDate");
-    let endDate = map.get("endDate");
+    let startDate = paramMap.get("startDate");
+    let endDate = paramMap.get("endDate");
     if (startDate) {
       startDate = this.datePipe.transform(startDate, 'yyyy-MM-dd');
-      map.set("startDate", startDate);
+      paramMap.set("startDate", startDate);
     }
 
     if (endDate) {
       endDate = this.datePipe.transform(endDate, 'yyyy-MM-dd');
-      map.set("endDate", endDate);
+      paramMap.set("endDate", endDate);
     }
 
-    this.loadTransactions(map);
+    paramMap.set("page", this.page);
+    paramMap.set("size", this.size);
+    return paramMap;
+
   }
 
 
@@ -102,14 +105,12 @@ export class TransactionManagementComponent implements OnInit {
   clearSearchForm() {
     this.trxSearchForm.reset();
     this.trxSearchForm.updateValueAndValidity();
+    this.loadTransactions();
   }
 
-  loadTransactions(paramMap?: Map<string, any>): void {
-    if (!paramMap) {
-      paramMap = new Map<string, any>();
-      paramMap.set("page", this.page);
-      paramMap.set("size", this.size);
-    }
+  loadTransactions(): void {
+    let paramMap: Map<string, any> = this.getParamMap();
+
     this.loader.show();
     this.transactionService.fetchPagedTransactions(paramMap).subscribe({
       next: res => {
@@ -162,10 +163,6 @@ export class TransactionManagementComponent implements OnInit {
       }
     });
   }
-
-
-
-
 
 
   onPageChange(event: PageEvent): void {
@@ -279,13 +276,13 @@ export class TransactionManagementComponent implements OnInit {
       },
       didParseCell: function (data: any) {
         if (data.column.index === 6) {
-          data.cell.styles.fillColor = [220, 255, 220]; 
+          data.cell.styles.fillColor = [220, 255, 220];
         }
         if (data.column.index === 7) {
-          data.cell.styles.fillColor = [255, 220, 220]; 
+          data.cell.styles.fillColor = [255, 220, 220];
         }
 
-        
+
       }
 
     });
