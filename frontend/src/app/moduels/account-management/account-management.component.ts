@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AccountViewDialogComponent } from '../components/account-view-dialog/account-view-dialog.component';
 import { AccountFormDialogComponent } from '../components/account-form-dialog/account-form-dialog.component';
 import { AccountService } from '../../_services/account.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-account-management',
@@ -16,6 +18,7 @@ import { AccountService } from '../../_services/account.service';
 })
 export class AccountManagementComponent implements OnInit {
 
+  acSearchForm!: FormGroup;
   displayedColumns = ["id", "accountNumber", "accountType", "status", "balance", "action"];
   dataSource = new MatTableDataSource<any>([]);
   totalElements = 0;
@@ -23,28 +26,27 @@ export class AccountManagementComponent implements OnInit {
   page = 0;
   size = 10;
 
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private toast: ToasterService,
     private loader: LoaderService,
     private accountService: AccountService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
-
+    this.initAcSearchForm();
   }
 
   ngOnInit(): void {
-
     this.loadAccounts();
+
   }
 
-  loadAccounts(paramMap?: Map<string, any>): void {
-    if (!paramMap) {
-      paramMap = new Map<string, any>();
-      paramMap.set("page", this.page);
-      paramMap.set("size", this.size);
-    }
+  loadAccounts(): void {
+    let paramMap: Map<string, any> = this.getParamMap();
     this.loader.show();
     this.accountService.fetchPagedAccounts(paramMap).subscribe({
       next: res => {
@@ -119,7 +121,29 @@ export class AccountManagementComponent implements OnInit {
     });
   }
 
+  getParamMap(): Map<string, any> {
+    let searchObject = this.acSearchForm.value ? this.acSearchForm.value : {};
+    let paramMap = new Map<string, any>(
+      Object.entries(searchObject).filter(([_, value]) => value !== null && value !== undefined && value !== '')
+    );
+    paramMap.set("page", this.page);
+    paramMap.set("size", this.size);
+    return paramMap;
+  }
 
+  clearSearchForm() {
+    this.acSearchForm.reset();
+    this.acSearchForm.updateValueAndValidity();
+    this.loadAccounts();
+  }
+
+  initAcSearchForm() {
+    this.acSearchForm = this.fb.group({
+      accountNumber: [''],
+      accountType: [''],
+      status: [''],
+    });
+  }
 
 
 }
