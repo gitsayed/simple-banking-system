@@ -7,6 +7,7 @@ import { UserService } from '../../../_services/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RoleFormDialogComponent } from '../role-form-dialog/role-form-dialog.component';
 import { RoleViewDialogComponent } from '../role-view-dialog/role-view-dialog.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-role',
@@ -22,6 +23,7 @@ export class RoleComponent implements OnInit {
   totalPages = 0;
   page = 0;
   size = 10;
+  searchForm!: FormGroup;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -29,22 +31,20 @@ export class RoleComponent implements OnInit {
     private toast: ToasterService,
     private loader: LoaderService,
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
+
   ) {
 
   }
 
   ngOnInit(): void {
-
+    this.initSearchForm();
     this.loadRoles();
   }
 
-  loadRoles(paramMap?: Map<string, any>): void {
-    if (!paramMap) {
-      paramMap = new Map<string, any>();
-      paramMap.set("page", this.page);
-      paramMap.set("size", this.size);
-    }
+  loadRoles(): void {
+    let paramMap: Map<string, any> = this.getParamMap();
     this.loader.show();
     this.userService.fetchPagedRoles(paramMap).subscribe({
       next: res => {
@@ -99,6 +99,32 @@ export class RoleComponent implements OnInit {
         this.loadRoles();
       }
     });
+  }
+
+
+  initSearchForm() {
+    this.searchForm = this.fb.group({
+      id: [''],
+      name: ['']
+
+    });
+  }
+
+  clearSearchForm() {
+    this.searchForm.reset();
+    this.searchForm.updateValueAndValidity();
+    this.loadRoles();
+  }
+
+  getParamMap(): Map<string, any> {
+    let searchObject = this.searchForm.value ? this.searchForm.value : {};
+    let paramMap = new Map<string, any>(
+      Object.entries(searchObject).filter(([_, value]) => value !== null && value !== undefined && value !== '')
+    );
+
+    paramMap.set("page", this.page);
+    paramMap.set("size", this.size);
+    return paramMap;
   }
 
 

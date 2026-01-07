@@ -1,6 +1,25 @@
 <mat-card appearance="outlined">
   <mat-card-header>
-      <button mat-flat-button (click)="openRoleAddDialog()">Add Role</button>
+    <button mat-flat-button (click)="openRoleAddDialog()">Add Role</button>
+  </mat-card-header>
+
+  <mat-card-header>
+    <form [formGroup]="searchForm" class="search-form">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Role ID</mat-label>
+        <input matInput formControlName="id">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+
+      <button mat-button class="transfer-button-color" style="margin-top: -1%; " (click)="loadRoles()">Search</button>
+      <button mat-button (click)="clearSearchForm()" class="widthraw-button-color"
+        style="margin-top: -1%;">Clear</button>
+    </form>
   </mat-card-header>
   <mat-card-content style="margin-top: 2%;">
     <mat-card class="table-card">
@@ -23,15 +42,13 @@
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let row">
               <button mat-flat-button color="primary" (click)="onRowClick(row)">View</button>
-         
+
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
-           [class.odd-row]="i % 2 !== 0"
-            [class.even-row]="i % 2 === 0"
-            >
+          <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;" [class.odd-row]="i % 2 !== 0"
+            [class.even-row]="i % 2 === 0">
           </tr>
         </table>
       </div>
