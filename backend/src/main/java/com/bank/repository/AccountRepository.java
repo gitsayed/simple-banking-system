@@ -55,24 +55,28 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
             AND LOWER(ac.accountNumber) LIKE LOWER(CONCAT('%' , COALESCE(:accountNumber, ac.accountNumber) , '%'))
             AND ac.dailyTransactionLimit <= COALESCE(:dailyTransactionLimit, ac.dailyTransactionLimit)
             AND LOWER(ac.status) = LOWER( COALESCE(:status, ac.status) )
+            AND c.id =  COALESCE(:customerId, c.id) 
+            AND LOWER(c.name) LIKE LOWER(CONCAT('%' , COALESCE(:customerName, c.name) , '%'))
             """;
 
     String COMMON_SQL = """
             SELECT ac
             FROM Account ac
+            LEFT JOIN customer c
             """;
     String AC_PAGED_COUNT = """
             SELECT COUNT(ac.id)
             FROM Account ac
+            LEFT JOIN customer c
             """ + AC_PAGED_CONDITION;
 
     String AC_SQL = COMMON_SQL+AC_PAGED_CONDITION+" ORDER BY ac.id DESC";
 
     @Query(value = AC_SQL , countQuery = AC_PAGED_COUNT)
-    Page<AccountResponseDto> getPagedAccounts(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status, Pageable pageable);
+    Page<AccountResponseDto> getPagedAccounts(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status,Long customerId, String customerName, Pageable pageable);
 
     @Query(value = AC_SQL)
-    List<AccountResponseDto> getAccountList(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status);
+    List<AccountResponseDto> getAccountList(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status,Long customerId, String customerName);
 
 
 }

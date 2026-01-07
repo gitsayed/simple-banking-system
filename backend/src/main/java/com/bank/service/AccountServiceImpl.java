@@ -82,13 +82,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Page<AccountResponseDto> getPagedAccounts(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status, Pageable pageable) {
-      return accountRepository.getPagedAccounts(id, accountType, accountNumber, dailyTransactionLimit, status, pageable);
+    public Page<AccountResponseDto> getPagedAccounts(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status, Long customerId, String customerName, Pageable pageable) {
+      return accountRepository.getPagedAccounts(id, accountType, accountNumber, dailyTransactionLimit, status, customerId, customerName, pageable);
     }
 
     @Override
-    public List<AccountResponseDto> getAccountList(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status) {
-       return accountRepository.getAccountList(id, accountType, accountNumber, dailyTransactionLimit, status);
+    public List<AccountResponseDto> getAccountList(Long id, String accountType, String accountNumber, Double dailyTransactionLimit, String status,Long customerId, String customerName) {
+       return accountRepository.getAccountList(id, accountType, accountNumber, dailyTransactionLimit, status, customerId, customerName);
     }
 
 

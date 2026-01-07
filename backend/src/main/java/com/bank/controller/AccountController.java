@@ -71,9 +71,11 @@ public class AccountController {
                        @RequestParam(required = false) String accountNumber,
                        @RequestParam(required = false) Double dailyTransactionLimit,
                        @RequestParam(required = false) String status,
+                       @RequestParam(required = false) Long customerId,
+                       @RequestParam(required = false) String customerName,
                        Pageable pageable) {
         log.info("Fetching paged accounts...");
-        Page<AccountResponseDto> pagedAccounts = accountService.getPagedAccounts(id,accountType, accountNumber, dailyTransactionLimit, status, pageable);
+        Page<AccountResponseDto> pagedAccounts = accountService.getPagedAccounts(id,accountType, accountNumber, dailyTransactionLimit, status, customerId, customerName, pageable);
         return ResponseEntity.ok(pagedAccounts);
     }
 
@@ -84,9 +86,11 @@ public class AccountController {
                      @RequestParam(required = false) String accountType,
                      @RequestParam(required = false) String accountNumber,
                      @RequestParam(required = false) Double dailyTransactionLimit,
-                     @RequestParam(required = false) String status) {
+                     @RequestParam(required = false) String status,
+                     @RequestParam(required = false) Long customerId,
+                     @RequestParam(required = false) String customerName) {
         log.info("Fetching account list...");
-        List<AccountResponseDto> accountList = accountService.getAccountList(id,accountType, accountNumber, dailyTransactionLimit, status);
+        List<AccountResponseDto> accountList = accountService.getAccountList(id,accountType, accountNumber, dailyTransactionLimit, status, customerId, customerName);
         return ResponseEntity.ok(accountList);
     }
 

@@ -19,7 +19,7 @@ import { DatePipe } from '@angular/common';
 export class AccountManagementComponent implements OnInit {
 
   acSearchForm!: FormGroup;
-  displayedColumns = ["id", "accountNumber", "accountType", "status", "balance", "action"];
+  displayedColumns = ["id", "accountNumber", "accountType", "customerId", "customerName", "status", "balance", "action"];
   dataSource = new MatTableDataSource<any>([]);
   totalElements = 0;
   totalPages = 0;
@@ -37,10 +37,11 @@ export class AccountManagementComponent implements OnInit {
     private fb: FormBuilder,
     private datePipe: DatePipe
   ) {
-    this.initAcSearchForm();
+
   }
 
   ngOnInit(): void {
+    this.initAcSearchForm();
     this.loadAccounts();
 
   }
@@ -142,6 +143,8 @@ export class AccountManagementComponent implements OnInit {
       accountNumber: [''],
       accountType: [''],
       status: [''],
+      customerId: [''],
+      customerName: [''],
     });
   }
 
