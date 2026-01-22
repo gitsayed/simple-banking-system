@@ -1,16 +1,15 @@
 # Simple Banking System
 
-# Assignment Project Documentation
+### Project Documentation
 
 ### Project Overview
 
-This project is assigned about the Simple Banking System against an interview session.
-Within the assigned time duration I tried to complete the project. This project has two
+This project is about a Simple Banking System. This project has two main
 parts are following:
 1) Backend
 2) Frontend
 
-### Features developed
+### Basic Features developed
 
 ```
 1) Role based user management.
@@ -26,7 +25,7 @@ developed.
 10) Unique Account Number generation.
 11) Validation messages.
 ```
-### Technologies
+### Technologies are used in the project.
 
 I used several technologies in this project to develop.
 **Backend:** Java, Spring Boot-4.0.0, Maven.
@@ -83,9 +82,7 @@ c) Roles: [ADMIN]
 
 ### Conclusion:
 
-This is my assigned project. The duration of the project development is five days. I tried
-to develop the project with my highest efforts. There may be some mistakes after this. I
-apologize for that.
+This is my project. It is the initial stage of this project. Later, new feature and development will be done.
 
 ## Thank you all.
 
