@@ -65,9 +65,9 @@ Address.
 Please clone the project from the repository:
 https://github.com/gitsayed/simple-banking-system
 1) Please see the frontend project in the cloned location frontend folder.
-2) I used Node Js 18 and Angular 19.2.19 to develop the frontend project. So,
+2) I used Node.js 18 and Angular 19.2.19 to develop the frontend project. So,
 please install those in your machine.
-3) Please configure environment.ts file file to connect your backend project with
+3) Please configure environment.ts file to connect your backend project with
 frontend project.
 4) Now run following commands:
 a) “npm install”
